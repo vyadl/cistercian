@@ -1,0 +1,30 @@
+* {
+  box-sizing: border-box;
+}
+
+input {
+  outline: none;
+}
+
+// central line transition
+
+.fade-central-enter-active,
+.fade-central-leave-active {
+  transition: opacity .5s .5s;
+}
+.fade-central-enter,
+.fade-central-leave-to {
+  opacity: 0;
+}
+
+// digits transition
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
