@@ -79,8 +79,8 @@ export default {
     },
   },
   mounted() {
-    if (this.$route.query) {
-      this.number = this.$route.query.number;
+    if (this.$route.params.number) {
+      this.number = this.$route.params.number;
       this.defineDigitsDebounced();
     }
   },
@@ -90,15 +90,16 @@ export default {
         this.number = '9999';
       }
 
+      if (this.number) {
+        this.$router.push({ name: 'number', params: { number: this.number } }).catch(err => {}); // eslint-disable-line no-unused-vars
+      } else {
+        this.$router.push({ path: '/' });
+      }
+
       this.digits.units = this.number[this.number.length - 1];
       this.digits.tens = this.number[this.number.length - 2];
       this.digits.hundreds = this.number[this.number.length - 3];
       this.digits.thousands = this.number[this.number.length - 4];
-
-      this.$router.replace({
-        name: this.$route.name,
-        query: { number: this.number },
-      }).catch(err => {}); // eslint-disable-line no-unused-vars
     }, DELAY_ON_INPUT),
   },
 };

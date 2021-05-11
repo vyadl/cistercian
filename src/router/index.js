@@ -10,10 +10,28 @@ const routes = [
     path: '/',
     name: 'homePage',
     component: HomePage,
+    children: [
+      {
+        path: ':number',
+        name: 'number',
+        component: HomePage,
+        meta: {
+          layout: 'HomeLayout',
+        },
+      },
+    ],
     meta: {
       layout: 'HomeLayout',
     },
   },
+  // {
+  //   path: '/:number',
+  //   name: 'homePageWithNumber',
+  //   component: HomePage,
+  //   meta: {
+  //     layout: 'HomeLayout',
+  //   },
+  // },
   {
     path: '/info',
     name: 'infoPage',
