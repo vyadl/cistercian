@@ -17,11 +17,14 @@ export default {
   },
   computed: {
     layout() {
-      return this.$route.meta.layout;
+      let layout = HomeLayout;
+
+      if (this.$route.meta.layout) {
+        layout = this.$route.meta.layout;
+      }
+
+      return layout;
     },
   },
 };
 </script>
-
-<style lang="scss">
-</style>

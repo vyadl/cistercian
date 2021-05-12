@@ -4,7 +4,7 @@
       <input
         class="input-number"
         type="number"
-        v-model="number"
+        v-model.number="number"
         @input.prevent="defineDigitsDebounced"
       >
       <div
@@ -14,7 +14,7 @@
         <span>максимальное число - 9999</span>
       </div>
     </form>
-    <div class="cist-number">
+    <div class="cistercian-number">
       <transition name="fade-central">
         <div
           class="central-line"
@@ -28,9 +28,7 @@
           :key="digit.digitClass"
         >
           <transition name="fade">
-            <div
-              class="lines-conainer"
-            >
+            <div>
               <div class="first-line"></div>
               <div class="second-line"></div>
               <div class="third-line"></div>
@@ -48,12 +46,12 @@ const DELAY_ON_INPUT = 1000;
 
 export default {
   data: () => ({
-    number: '',
+    number: null,
     digits: {
-      units: '',
-      tens: '',
-      hundreds: '',
-      thousands: '',
+      units: 0,
+      tens: 0,
+      hundreds: 0,
+      thousands: 0,
     },
   }),
   computed: {
@@ -80,26 +78,32 @@ export default {
   },
   mounted() {
     if (this.$route.params.number) {
-      this.number = this.$route.params.number;
-      this.defineDigitsDebounced();
+      this.number = +this.$route.params.number;
+      this.defineDigits();
     }
   },
   methods: {
-    defineDigitsDebounced: debounce(function defineDigits() {
+    defineDigits() {
       if (this.number > 9999) {
-        this.number = '9999';
+        this.number = 9999;
       }
 
       if (this.number) {
-        this.$router.push({ name: 'number', params: { number: this.number } }).catch(err => {}); // eslint-disable-line no-unused-vars
+        this.$router.push({
+          name: 'number',
+          params: { number: this.number },
+        }).catch(() => {});
       } else {
-        this.$router.push({ path: '/' });
+        this.$router.push({ name: 'homePage' }).catch(() => {});
       }
 
-      this.digits.units = this.number[this.number.length - 1];
-      this.digits.tens = this.number[this.number.length - 2];
-      this.digits.hundreds = this.number[this.number.length - 3];
-      this.digits.thousands = this.number[this.number.length - 4];
+      this.digits.units = this.number % 10;
+      this.digits.tens = Math.floor((this.number % 100) / 10);
+      this.digits.hundreds = Math.floor((this.number % 1000) / 100);
+      this.digits.thousands = Math.floor(this.number / 1000);
+    },
+    defineDigitsDebounced: debounce(function defineDigitsForDebounce() {
+      this.defineDigits();
     }, DELAY_ON_INPUT),
   },
 };
@@ -133,7 +137,7 @@ export default {
       font-size: 14px;
     }
 
-    .cist-number {
+    .cistercian-number {
       position: relative;
       width: 290px;
       height: 450px;
@@ -178,10 +182,6 @@ export default {
       left: 0;
       transform-origin: center;
       transform: scale(-1, -1);
-    }
-
-    .lines-container {
-      position: relative;
     }
 
     .first-line,
@@ -279,18 +279,21 @@ export default {
     }
 
     .numeral-9 {
-      .first-line {
+      .first-line,
+      .second-line,
+      .third-line {
         display: block;
+      }
+
+      .first-line {
         top: 0;
       }
 
       .second-line {
-        display: block;
         bottom: 0;
       }
 
       .third-line {
-        display: block;
         transform-origin: top right;
         transform: rotate(-90deg) translateY(-100%);
       }
