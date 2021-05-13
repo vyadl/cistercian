@@ -1,22 +1,75 @@
-// central line transition
+// central line transition together
 
-.fade-central-enter-active,
-.fade-central-leave-active {
-  transition: opacity .5s .5s;
+.together-central-enter-active,
+.together-central-leave-active {
+  transition: opacity $lines-transition-duration;
 }
-.fade-central-enter,
-.fade-central-leave-to {
+
+.together-central-enter,
+.together-central-leave-to {
   opacity: 0;
 }
 
-// digits transition
+// digits transition together
 
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity .5s;
+.together-enter-active,
+.together-leave-active {
+  transition: opacity $lines-transition-duration;
 }
 
-.fade-enter,
-.fade-leave-to {
+.together-leave-active {
+  transition: opacity $lines-transition-duration;
+}
+
+.together-enter,
+.together-leave-to {
   opacity: 0;
+}
+
+// central line transition separately
+
+.separately-central-enter-active {
+  transition: opacity $lines-transition-duration;
+}
+
+.separately-central-leave-active {
+  transition: opacity $lines-transition-duration $lines-transition-step * 3;
+}
+
+.separately-central-enter,
+.separately-central-leave-to {
+  opacity: 0;
+}
+
+// digits transition separately
+
+.separately-1-enter,
+.separately-1-leave-to,
+.separately-2-enter,
+.separately-2-leave-to,
+.separately-3-enter,
+.separately-3-leave-to,
+.separately-4-enter,
+.separately-4-leave-to {
+  opacity: 0;
+}
+
+.separately-1-enter-active,
+.separately-1-leave-active {
+  transition: opacity $lines-transition-duration;
+}
+
+.separately-2-enter-active,
+.separately-2-leave-active {
+  transition: opacity $lines-transition-duration $lines-transition-step;
+}
+
+.separately-3-enter-active,
+.separately-3-leave-active {
+  transition: opacity $lines-transition-duration $lines-transition-step * 2;
+}
+
+.separately-4-enter-active,
+.separately-4-leave-active {
+  transition: opacity $lines-transition-duration $lines-transition-step * 3;
 }

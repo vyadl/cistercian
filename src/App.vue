@@ -17,13 +17,7 @@ export default {
   },
   computed: {
     layout() {
-      let layout = HomeLayout;
-
-      if (this.$route.meta.layout) {
-        layout = this.$route.meta.layout;
-      }
-
-      return layout;
+      return this.$route.meta.layout ? this.$route.meta.layout : 'HomeLayout';
     },
   },
 };

@@ -1,6 +1,6 @@
 *,
-::after,
-::before {
+*::after,
+*::before {
   box-sizing: border-box;
 }
 
@@ -19,4 +19,9 @@ button {
   outline: none;
   background-color: transparent;
   letter-spacing: inherit;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
 }

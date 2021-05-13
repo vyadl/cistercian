@@ -5,33 +5,33 @@
         class="input-number"
         type="number"
         v-model.number="number"
-        @input.prevent="defineDigitsDebounced"
+        @input.prevent="updateDigits"
       >
       <div
         class="message"
-        v-if="number >= 9999"
+        v-if="showMessage"
       >
         <span>максимальное число - 9999</span>
       </div>
     </form>
     <div class="cistercian-number">
-      <transition name="fade-central">
+      <transition :name="lineTransition">
         <div
           class="central-line"
-          v-if="number > 0"
+          v-if="appearance && number"
         ></div>
       </transition>
         <div
-          v-for="digit in digitsToRender"
           class="digit"
           :class="[digit.digitClass, digit.numeralClass]"
+          v-for="digit in digitsToRender"
           :key="digit.digitClass"
         >
-          <transition name="fade">
-            <div>
-              <div class="first-line"></div>
-              <div class="second-line"></div>
-              <div class="third-line"></div>
+          <transition :name="digit.transitionName">
+            <div v-if="appearance">
+              <div class="line first"></div>
+              <div class="line second"></div>
+              <div class="line third"></div>
             </div>
           </transition>
         </div>
@@ -42,7 +42,7 @@
 <script>
 import { debounce } from '@/utils/utils';
 
-const DELAY_ON_INPUT = 1000;
+const DELAY_ON_INPUT = 600;
 
 export default {
   data: () => ({
@@ -53,25 +53,38 @@ export default {
       hundreds: 0,
       thousands: 0,
     },
+    appearance: false,
+    lineTransition: 'separately-central',
+    digitsTransitions: ['1', '2', '3', '4'],
+    showMessage: false,
   }),
   computed: {
+    // showMessage() {
+    //   if (this.number > 9999) {
+
+    //   }
+    // }
     digitsToRender() {
       return [
         {
           digitClass: 'units',
           numeralClass: this.digits.units ? `numeral-${this.digits.units}` : '',
+          transitionName: `separately-${this.digitsTransitions[0]}`,
         },
         {
           digitClass: 'tens',
           numeralClass: this.digits.tens ? `numeral-${this.digits.tens}` : '',
+          transitionName: `separately-${this.digitsTransitions[1]}`,
         },
         {
           digitClass: 'hundreds',
           numeralClass: this.digits.hundreds ? `numeral-${this.digits.hundreds}` : '',
+          transitionName: `separately-${this.digitsTransitions[2]}`,
         },
         {
           digitClass: 'thousands',
           numeralClass: this.digits.thousands ? `numeral-${this.digits.thousands}` : '',
+          transitionName: `separately-${this.digitsTransitions[3]}`,
         },
       ];
     },
@@ -83,9 +96,23 @@ export default {
     }
   },
   methods: {
+    shuffleDigitsTransitions() {
+      const randomDigitTransitions = [];
+      const copyDigitsTransitions = this.digitsTransitions.slice();
+
+      for (let i = 0; i < this.digitsTransitions.length; i++) {
+        const randomNumber = Math.floor(Math.random() * (copyDigitsTransitions.length));
+
+        randomDigitTransitions.push(copyDigitsTransitions[randomNumber]);
+        copyDigitsTransitions.splice(randomNumber, 1);
+      }
+
+      this.digitsTransitions = randomDigitTransitions;
+    },
     defineDigits() {
       if (this.number > 9999) {
         this.number = 9999;
+        this.showMessage = true;
       }
 
       if (this.number) {
@@ -101,10 +128,18 @@ export default {
       this.digits.tens = Math.floor((this.number % 100) / 10);
       this.digits.hundreds = Math.floor((this.number % 1000) / 100);
       this.digits.thousands = Math.floor(this.number / 1000);
+
+      this.appearance = true;
     },
     defineDigitsDebounced: debounce(function defineDigitsForDebounce() {
       this.defineDigits();
     }, DELAY_ON_INPUT),
+    updateDigits() {
+      this.appearance = false;
+      this.showMessage = false;
+      this.shuffleDigitsTransitions();
+      this.defineDigitsDebounced();
+    },
   },
 };
 </script>
@@ -126,10 +161,13 @@ export default {
     .input-number {
       width: 100px;
       margin-bottom: 5px;
+      padding-bottom: 3px;
+      border-bottom: 1px solid #999;
+      text-align: center;
+      transition: border-color .2s;
 
-      &::-webkit-outer-spin-button,
-      &::-webkit-inner-spin-button {
-        display: none;
+      &:focus {
+        border-color: #333;
       }
     }
 
@@ -139,8 +177,8 @@ export default {
 
     .cistercian-number {
       position: relative;
-      width: 290px;
-      height: 450px;
+      width: $digit-block-width * 2;
+      height: $digit-block-width * 3;
     }
 
     .central-line {
@@ -154,8 +192,9 @@ export default {
 
     .digit {
       position: absolute;
-      width: 150px;
-      height: 150px;
+      width: $digit-block-width;
+      height: $digit-block-width + 50px;
+      overflow: hidden;
     }
 
     .units {
@@ -184,9 +223,7 @@ export default {
       transform: scale(-1, -1);
     }
 
-    .first-line,
-    .second-line,
-    .third-line {
+    .line {
       display: none;
       position: absolute;
       width: 100%;
@@ -196,106 +233,138 @@ export default {
     }
 
     .numeral-1 {
-      .first-line {
+      .first {
         display: block;
         top: 0;
+        right: 0;
+        width: 150%;
       }
     }
 
     .numeral-2 {
-      .first-line {
+      .first {
         display: block;
-        bottom: 0;
+        bottom: 50px;
+        right: 0;
       }
     }
 
     .numeral-3 {
-      .first-line {
+      .first {
         display: block;
         top: 0;
-        width: 130%;
-        transform-origin: center left;
-        transform: rotate(44deg) translate(-2px, -5px);
+        left: 0;
+        transform-origin: left bottom;
+        transform: rotate(45deg) translate(-11px, 2px);
       }
     }
 
     .numeral-4 {
-      .first-line {
+      .first {
         display: block;
-        bottom: 0;
-        width: 130%;
-        transform-origin: top left;
-        transform: rotate(-44deg) translateX(-2px);
+        top: 0;
+        right: 0;
+        width: 150%;
+        transform-origin: right bottom;
+        transform: rotate(-45deg);
       }
     }
 
     .numeral-5 {
-      .first-line {
+      .first {
         display: block;
         top: 0;
+        right: 0;
+        width: 150%;
       }
 
-      .second-line {
+      .second {
         display: block;
-        bottom: 0;
-        width: 131%;
-        transform-origin: top left;
-        transform: rotate(-44deg) translateX(-2px);
+        top: 0;
+        right: 0;
+        width: 150%;
+        transform-origin: right center;
+        transform: rotate(-45deg) translate(1px, -4px);
       }
     }
 
     .numeral-6 {
-      .first-line {
+      .first {
         display: block;
-        transform-origin: top right;
-        transform: rotate(-90deg) translateY(-100%);
+        top: 0;
+        right: 0;
+        transform-origin: right top;
+        transform: rotate(-90deg) translate(-1px, -100%);
       }
     }
 
     .numeral-7 {
-      .first-line {
+      .first {
         display: block;
         top: 0;
+        right: 0;
+        width: 140%;
       }
 
-      .second-line {
+      .second {
         display: block;
-        transform-origin: top right;
-        transform: rotate(-90deg) translateY(-100%);
+        top: 0;
+        right: 0;
+        transform-origin: right top;
+        transform: rotate(-90deg) translate(-1px, -97%);
       }
     }
 
     .numeral-8 {
-      .first-line {
+      .first {
         display: block;
-        bottom: 0;
+        bottom: 50px;
       }
 
-      .second-line {
+      .second {
         display: block;
-        transform-origin: top right;
-        transform: rotate(-90deg) translateY(-100%);
+        top: 0;
+        right: 0;
+        transform-origin: right top;
+        transform: rotate(-90deg) translate(0, -97%);
       }
     }
 
     .numeral-9 {
-      .first-line,
-      .second-line,
-      .third-line {
+      .line {
         display: block;
       }
 
-      .first-line {
+      .first {
         top: 0;
+        right: 0;
+        width: 150%;
       }
 
-      .second-line {
-        bottom: 0;
+      .second {
+        bottom: 50px;
+        right: 0;
       }
 
-      .third-line {
-        transform-origin: top right;
-        transform: rotate(-90deg) translateY(-100%);
+      .third {
+        top: 0;
+        right: 0;
+        transform-origin: right top;
+        transform: rotate(-90deg) translate(0, -97%);
+      }
+    }
+  }
+
+  @media screen and (max-width: $mobile-display-width) {
+    .cistercian-numbers {
+      .cistercian-number {
+        width: $digit-block-width-mobile * 2;
+        height: $digit-block-width-mobile * 3;
+      }
+
+      .digit {
+        width: $digit-block-width-mobile;
+        height: $digit-block-width-mobile + 50px;
       }
     }
   }
