@@ -7,28 +7,28 @@
         v-model.number="number"
         @input.prevent="updateDigits"
       >
-      <div
-        class="message"
-        v-if="showMessage"
-      >
-        <span>максимальное число - 9999</span>
+      <div class="message-container">
+        <span
+          class="message"
+          v-if="isValidationMessageShown"
+        >max number - 9999</span>
       </div>
     </form>
     <div class="cistercian-number">
       <transition :name="lineTransition">
         <div
           class="central-line"
-          v-if="appearance && number"
+          v-if="isLineShown && number"
         ></div>
       </transition>
         <div
           class="digit"
-          :class="[digit.digitClass, digit.numeralClass]"
-          v-for="digit in digitsToRender"
-          :key="digit.digitClass"
+          :class="[digit, `numeral-${numeral}`]"
+          v-for="(numeral, digit, index) in digits"
+          :key="digit"
         >
-          <transition :name="digit.transitionName">
-            <div v-if="appearance">
+          <transition :name="`separately-${digitsTransitionsOrder[index]}`">
+            <div v-if="isLineShown">
               <div class="line first"></div>
               <div class="line second"></div>
               <div class="line third"></div>
@@ -40,9 +40,8 @@
 </template>
 
 <script>
-import { debounce } from '@/utils/utils';
-
-const DELAY_ON_INPUT = 600;
+import { debounce, shuffleArray } from '@/utils/utils';
+import { DELAY_ON_INPUT } from 'root/config';
 
 export default {
   data: () => ({
@@ -53,42 +52,11 @@ export default {
       hundreds: 0,
       thousands: 0,
     },
-    appearance: false,
+    isLineShown: false,
     lineTransition: 'separately-central',
-    digitsTransitions: ['1', '2', '3', '4'],
-    showMessage: false,
+    digitsTransitionsOrder: ['1', '2', '3', '4'],
+    isValidationMessageShown: false,
   }),
-  computed: {
-    // showMessage() {
-    //   if (this.number > 9999) {
-
-    //   }
-    // }
-    digitsToRender() {
-      return [
-        {
-          digitClass: 'units',
-          numeralClass: this.digits.units ? `numeral-${this.digits.units}` : '',
-          transitionName: `separately-${this.digitsTransitions[0]}`,
-        },
-        {
-          digitClass: 'tens',
-          numeralClass: this.digits.tens ? `numeral-${this.digits.tens}` : '',
-          transitionName: `separately-${this.digitsTransitions[1]}`,
-        },
-        {
-          digitClass: 'hundreds',
-          numeralClass: this.digits.hundreds ? `numeral-${this.digits.hundreds}` : '',
-          transitionName: `separately-${this.digitsTransitions[2]}`,
-        },
-        {
-          digitClass: 'thousands',
-          numeralClass: this.digits.thousands ? `numeral-${this.digits.thousands}` : '',
-          transitionName: `separately-${this.digitsTransitions[3]}`,
-        },
-      ];
-    },
-  },
   mounted() {
     if (this.$route.params.number) {
       this.number = +this.$route.params.number;
@@ -96,28 +64,18 @@ export default {
     }
   },
   methods: {
-    shuffleDigitsTransitions() {
-      const randomDigitTransitions = [];
-      const copyDigitsTransitions = this.digitsTransitions.slice();
-
-      for (let i = 0; i < this.digitsTransitions.length; i++) {
-        const randomNumber = Math.floor(Math.random() * (copyDigitsTransitions.length));
-
-        randomDigitTransitions.push(copyDigitsTransitions[randomNumber]);
-        copyDigitsTransitions.splice(randomNumber, 1);
-      }
-
-      this.digitsTransitions = randomDigitTransitions;
+    shuffledigitsTransitionsOrder() {
+      this.digitsTransitionsOrder = shuffleArray(this.digitsTransitionsOrder);
     },
     defineDigits() {
       if (this.number > 9999) {
         this.number = 9999;
-        this.showMessage = true;
+        this.isValidationMessageShown = true;
       }
 
       if (this.number) {
         this.$router.push({
-          name: 'number',
+          name: 'homePageWithNumber',
           params: { number: this.number },
         }).catch(() => {});
       } else {
@@ -129,15 +87,15 @@ export default {
       this.digits.hundreds = Math.floor((this.number % 1000) / 100);
       this.digits.thousands = Math.floor(this.number / 1000);
 
-      this.appearance = true;
+      this.isLineShown = true;
     },
     defineDigitsDebounced: debounce(function defineDigitsForDebounce() {
       this.defineDigits();
     }, DELAY_ON_INPUT),
     updateDigits() {
-      this.appearance = false;
-      this.showMessage = false;
-      this.shuffleDigitsTransitions();
+      this.isLineShown = false;
+      this.isValidationMessageShown = false;
+      this.shuffledigitsTransitionsOrder();
       this.defineDigitsDebounced();
     },
   },
@@ -155,20 +113,25 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
-      height: 100px;
+      margin-bottom: 40px;
     }
 
     .input-number {
       width: 100px;
       margin-bottom: 5px;
       padding-bottom: 3px;
-      border-bottom: 1px solid #999;
+      border-bottom: 1px solid $border-color;
       text-align: center;
+      color: $text-color;
       transition: border-color .2s;
 
       &:focus {
-        border-color: #333;
+        border-color: $border-focus-color;
       }
+    }
+
+    .message-container {
+      height: 20px;
     }
 
     .message {
@@ -254,6 +217,7 @@ export default {
         display: block;
         top: 0;
         left: 0;
+        width: 130%;
         transform-origin: left bottom;
         transform: rotate(45deg) translate(-11px, 2px);
       }

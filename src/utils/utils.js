@@ -21,3 +21,17 @@ export const debounce = function debounce(func, wait, immediate) { // eslint-dis
     }
   };
 };
+
+export const shuffleArray = function shuffleArray(array) {
+  const result = [];
+  const copiedArray = array.slice();
+
+  for (let i = 0; i < array.length; i++) {
+    const randomNumber = Math.floor(Math.random() * (copiedArray.length));
+
+    result.push(copiedArray[randomNumber]);
+    copiedArray.splice(randomNumber, 1);
+  }
+
+  return result;
+};

@@ -13,7 +13,7 @@ const routes = [
     children: [
       {
         path: ':number',
-        name: 'number',
+        name: 'homePageWithNumber',
         component: HomePage,
       },
     ],
