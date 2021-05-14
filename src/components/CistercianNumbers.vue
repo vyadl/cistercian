@@ -18,7 +18,7 @@
       <transition :name="lineTransition">
         <div
           class="central-line"
-          v-if="isLineShown && number"
+          v-if="isCistercianShown && number"
         ></div>
       </transition>
         <div
@@ -28,7 +28,7 @@
           :key="digit"
         >
           <transition :name="`separately-${digitsTransitionsOrder[index]}`">
-            <div v-if="isLineShown">
+            <div v-if="isCistercianShown">
               <div class="line first"></div>
               <div class="line second"></div>
               <div class="line third"></div>
@@ -52,7 +52,7 @@ export default {
       hundreds: 0,
       thousands: 0,
     },
-    isLineShown: false,
+    isCistercianShown: false,
     lineTransition: 'separately-central',
     digitsTransitionsOrder: ['1', '2', '3', '4'],
     isValidationMessageShown: false,
@@ -87,13 +87,13 @@ export default {
       this.digits.hundreds = Math.floor((this.number % 1000) / 100);
       this.digits.thousands = Math.floor(this.number / 1000);
 
-      this.isLineShown = true;
+      this.isCistercianShown = true;
     },
     defineDigitsDebounced: debounce(function defineDigitsForDebounce() {
       this.defineDigits();
     }, DELAY_ON_INPUT),
     updateDigits() {
-      this.isLineShown = false;
+      this.isCistercianShown = false;
       this.isValidationMessageShown = false;
       this.shuffledigitsTransitionsOrder();
       this.defineDigitsDebounced();

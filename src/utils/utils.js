@@ -27,10 +27,10 @@ export const shuffleArray = function shuffleArray(array) {
   const copiedArray = array.slice();
 
   for (let i = 0; i < array.length; i++) {
-    const randomNumber = Math.floor(Math.random() * (copiedArray.length));
+    const randomIndex = Math.floor(Math.random() * (copiedArray.length));
 
-    result.push(copiedArray[randomNumber]);
-    copiedArray.splice(randomNumber, 1);
+    result.push(copiedArray[randomIndex]);
+    copiedArray.splice(randomIndex, 1);
   }
 
   return result;
