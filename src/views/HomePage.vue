@@ -30,7 +30,7 @@ export default {
     .title,
     .subtitle {
       width: fit-content;
-      color: rgba($text-color, .3);
+      color: $title-color;
       cursor: default;
     }
 
