@@ -4,6 +4,7 @@
       <input
         class="input-number"
         type="number"
+        placeholder="your number"
         v-model.number="number"
         @input.prevent="updateDigits"
       >
@@ -117,16 +118,25 @@ export default {
     }
 
     .input-number {
-      width: 100px;
+      width: 120px;
       margin-bottom: 5px;
       padding-bottom: 3px;
-      border-bottom: 1px solid $border-color;
+      border-bottom: 1px solid $light-gray-color;
       text-align: center;
       color: $text-color;
       transition: border-color .2s;
 
       &:focus {
-        border-color: $border-focus-color;
+        border-color: $dark-gray-color;
+
+        &::-webkit-input-placeholder {
+          color: transparent;
+        }
+      }
+
+      &::-webkit-input-placeholder {
+        font-size: 14px;
+        transition: color .2s;
       }
     }
 
@@ -219,7 +229,7 @@ export default {
         left: 0;
         width: 130%;
         transform-origin: left bottom;
-        transform: rotate(45deg) translate(-11px, 2px);
+        transform: rotate(44deg) translate(-11px, 2px);
       }
     }
 
@@ -230,7 +240,7 @@ export default {
         right: 0;
         width: 150%;
         transform-origin: right bottom;
-        transform: rotate(-45deg);
+        transform: rotate(-44deg);
       }
     }
 
@@ -248,7 +258,7 @@ export default {
         right: 0;
         width: 150%;
         transform-origin: right center;
-        transform: rotate(-45deg) translate(1px, -4px);
+        transform: rotate(-44deg) translate(1px, -4px);
       }
     }
 
@@ -329,6 +339,20 @@ export default {
       .digit {
         width: $digit-block-width-mobile;
         height: $digit-block-width-mobile + 50px;
+      }
+    }
+  }
+
+  @media screen and (max-width: $mobile-xs-display-width) {
+    .cistercian-numbers {
+      .cistercian-number {
+        width: $digit-block-width-mobile-xs * 2;
+        height: $digit-block-width-mobile-xs * 3;
+      }
+
+      .digit {
+        width: $digit-block-width-mobile-xs;
+        height: $digit-block-width-mobile-xs + 50px;
       }
     }
   }

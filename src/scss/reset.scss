@@ -9,6 +9,7 @@ h2,
 h3 {
   margin: 0;
   padding: 0;
+  pointer-events: none;
 }
 
 input,
@@ -16,9 +17,11 @@ select,
 textarea,
 button {
   border: none;
+  border-radius: 0;
   outline: none;
   background-color: transparent;
-  font-weight: inherit !important;
+  box-shadow: none;
+  font-weight: inherit;
   letter-spacing: inherit;
 }
 

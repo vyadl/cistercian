@@ -1,4 +1,4 @@
-# cistercian
+# numerals
 
 ## Project setup
 ```
