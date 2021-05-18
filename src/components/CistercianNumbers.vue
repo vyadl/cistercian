@@ -108,6 +108,9 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
     padding: 40px;
 
     .form-number {
@@ -155,12 +158,13 @@ export default {
     }
 
     .central-line {
-      width: $line-width;
+      position: absolute;
+      left: 50%;
+      width: $line-width + 1px;
       height: 100%;
-      margin-left: auto;
-      margin-right: auto;
       border-radius: $border-radius;
       background-color: $line-color;
+      transform: translateX(-50%);
     }
 
     .digit {
@@ -229,7 +233,7 @@ export default {
         left: 0;
         width: 130%;
         transform-origin: left bottom;
-        transform: rotate(44deg) translate(-11px, 2px);
+        transform: rotate(45deg) translate(-11px, 2px);
       }
     }
 
@@ -240,7 +244,7 @@ export default {
         right: 0;
         width: 150%;
         transform-origin: right bottom;
-        transform: rotate(-44deg);
+        transform: rotate(-45deg) translate(1px, -4px);
       }
     }
 
@@ -267,8 +271,9 @@ export default {
         display: block;
         top: 0;
         right: 0;
+        width: $line-width;
+        height: $digit-block-width;
         transform-origin: right top;
-        transform: rotate(-90deg) translate(-1px, -100%);
       }
     }
 
@@ -284,8 +289,9 @@ export default {
         display: block;
         top: 0;
         right: 0;
+        width: $line-width;
+        height: $digit-block-width;
         transform-origin: right top;
-        transform: rotate(-90deg) translate(-1px, -97%);
       }
     }
 
@@ -299,8 +305,9 @@ export default {
         display: block;
         top: 0;
         right: 0;
+        width: $line-width;
+        height: $digit-block-width;
         transform-origin: right top;
-        transform: rotate(-90deg) translate(0, -97%);
       }
     }
 
@@ -321,10 +328,12 @@ export default {
       }
 
       .third {
+        display: block;
         top: 0;
         right: 0;
+        width: $line-width;
+        height: $digit-block-width;
         transform-origin: right top;
-        transform: rotate(-90deg) translate(0, -97%);
       }
     }
   }
