@@ -164,7 +164,7 @@ export default {
       left: 50%;
       width: $line-width + 1px;
       height: 100%;
-      border-radius: $border-radius;
+      border-radius: $line-border-radius;
       background-color: $line-color;
       transform: translateX(-50%);
     }
@@ -173,7 +173,6 @@ export default {
       position: absolute;
       width: $digit-block-width;
       height: $digit-block-width;
-      // border: 1px solid black;
     }
 
     .units {
@@ -207,7 +206,7 @@ export default {
       position: absolute;
       width: 100%;
       height: $line-width;
-      border-radius: $border-radius;
+      border-radius: $line-border-radius;
       background-color: $line-color;
     }
 
@@ -216,7 +215,7 @@ export default {
         display: block;
         top: 0;
         right: 0;
-        border-radius: 0 $border-radius $border-radius 0;
+        border-radius: 0 $line-border-radius $line-border-radius 0;
       }
     }
 
@@ -256,7 +255,7 @@ export default {
         display: block;
         top: 0;
         right: 0;
-        border-radius: 0 $border-radius * .5 $border-radius 0;
+        border-radius: 0 $line-border-radius * .5 $line-border-radius 0;
       }
 
       .second {
@@ -284,7 +283,7 @@ export default {
         display: block;
         top: 0;
         right: 0;
-        border-radius: 0 $border-radius $border-radius 0;
+        border-radius: 0 $line-border-radius $line-border-radius 0;
       }
 
       .second {
@@ -293,7 +292,7 @@ export default {
         right: 0;
         width: $line-width;
         height: 100%;
-        border-radius: 0 $border-radius $border-radius $border-radius;
+        border-radius: 0 $line-border-radius $line-border-radius $line-border-radius;
       }
     }
 
@@ -312,7 +311,7 @@ export default {
         right: 0;
         width: $line-width;
         height: 100%;
-        border-radius: $border-radius $border-radius $border-radius * .5 0;
+        border-radius: $line-border-radius $line-border-radius $line-border-radius * .5 0;
       }
     }
 
@@ -324,7 +323,7 @@ export default {
       .first {
         top: 0;
         right: 0;
-        border-radius: 0 $border-radius $border-radius 0;
+        border-radius: 0 $line-border-radius $line-border-radius 0;
       }
 
       .second {
@@ -339,7 +338,7 @@ export default {
         right: 0;
         width: $line-width;
         height: 100%;
-        border-radius: $border-radius $border-radius $border-radius / 2 0;
+        border-radius: $line-border-radius $line-border-radius $line-border-radius / 2 0;
       }
     }
   }
