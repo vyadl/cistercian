@@ -105,6 +105,8 @@ export default {
 
 <style lang="scss">
   .cistercian-numbers {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -170,8 +172,8 @@ export default {
     .digit {
       position: absolute;
       width: $digit-block-width;
-      height: $digit-block-width + 50px;
-      overflow: hidden;
+      height: $digit-block-width;
+      // border: 1px solid black;
     }
 
     .units {
@@ -214,26 +216,27 @@ export default {
         display: block;
         top: 0;
         right: 0;
-        width: 150%;
+        border-radius: 0 $border-radius $border-radius 0;
       }
     }
 
     .numeral-2 {
       .first {
         display: block;
-        bottom: 50px;
+        bottom: 0;
         right: 0;
+        transform: translateY(34%);
       }
     }
 
     .numeral-3 {
       .first {
         display: block;
-        top: 0;
-        left: 0;
-        width: 130%;
-        transform-origin: left bottom;
-        transform: rotate(45deg) translate(-11px, 2px);
+        bottom: 0;
+        right: 0;
+        width: 140%;
+        transform-origin: right top;
+        transform: translateY(77%) rotate(45deg);
       }
     }
 
@@ -242,9 +245,9 @@ export default {
         display: block;
         top: 0;
         right: 0;
-        width: 150%;
-        transform-origin: right bottom;
-        transform: rotate(-45deg) translate(1px, -4px);
+        width: 145%;
+        transform-origin: right center;
+        transform: translateY(-34%) rotate(-45deg);
       }
     }
 
@@ -253,16 +256,16 @@ export default {
         display: block;
         top: 0;
         right: 0;
-        width: 150%;
+        border-radius: 0 $border-radius * .5 $border-radius 0;
       }
 
       .second {
         display: block;
         top: 0;
         right: 0;
-        width: 150%;
+        width: 145%;
         transform-origin: right center;
-        transform: rotate(-44deg) translate(1px, -4px);
+        transform: translateY(-34%) rotate(-45deg);
       }
     }
 
@@ -272,8 +275,7 @@ export default {
         top: 0;
         right: 0;
         width: $line-width;
-        height: $digit-block-width;
-        transform-origin: right top;
+        height: 100%;
       }
     }
 
@@ -282,7 +284,7 @@ export default {
         display: block;
         top: 0;
         right: 0;
-        width: 140%;
+        border-radius: 0 $border-radius $border-radius 0;
       }
 
       .second {
@@ -290,15 +292,18 @@ export default {
         top: 0;
         right: 0;
         width: $line-width;
-        height: $digit-block-width;
-        transform-origin: right top;
+        height: 100%;
+        border-radius: 0 $border-radius $border-radius $border-radius;
       }
     }
 
     .numeral-8 {
       .first {
         display: block;
-        bottom: 50px;
+        display: block;
+        bottom: 0;
+        right: 0;
+        transform: translateY(34%);
       }
 
       .second {
@@ -306,8 +311,8 @@ export default {
         top: 0;
         right: 0;
         width: $line-width;
-        height: $digit-block-width;
-        transform-origin: right top;
+        height: 100%;
+        border-radius: $border-radius $border-radius $border-radius * .5 0;
       }
     }
 
@@ -319,21 +324,22 @@ export default {
       .first {
         top: 0;
         right: 0;
-        width: 150%;
+        border-radius: 0 $border-radius $border-radius 0;
       }
 
       .second {
-        bottom: 50px;
+        display: block;
+        bottom: 0;
         right: 0;
+        transform: translateY(34%);
       }
 
       .third {
-        display: block;
         top: 0;
         right: 0;
         width: $line-width;
-        height: $digit-block-width;
-        transform-origin: right top;
+        height: 100%;
+        border-radius: $border-radius $border-radius $border-radius / 2 0;
       }
     }
   }
@@ -347,7 +353,7 @@ export default {
 
       .digit {
         width: $digit-block-width-mobile;
-        height: $digit-block-width-mobile + 50px;
+        height: $digit-block-width-mobile;
       }
     }
   }
@@ -361,7 +367,7 @@ export default {
 
       .digit {
         width: $digit-block-width-mobile-xs;
-        height: $digit-block-width-mobile-xs + 50px;
+        height: $digit-block-width-mobile-xs;
       }
     }
   }

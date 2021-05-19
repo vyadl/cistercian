@@ -1,9 +1,7 @@
 <template>
   <div class="home-page">
-    <div class="title-container">
-      <h1 class="title">numerals</h1>
-      <h2 class="subtitle">decimal to cistercian</h2>
-    </div>
+    <h1 class="title">numerals</h1>
+    <h2 class="subtitle">decimal to cistercian</h2>
     <CistercianNumbers />
   </div>
 </template>
@@ -20,45 +18,40 @@ export default {
 
 <style lang="scss">
   .home-page {
-    .title-container {
-      position: absolute;
-      z-index: -1;
-      width: 100%;
-      padding: 30px 40px;
-    }
-
     .title,
     .subtitle {
+      position: absolute;
+      left: 25px;
       width: fit-content;
       color: $title-color;
       cursor: default;
     }
 
     .title {
-      margin-bottom: 10px;
-      font-size: 25px;
+      top: 15px;
+      font-size: 20px;
     }
 
     .subtitle {
-      font-size: 15px;
+      top: 45px;
+      font-size: 12px;
     }
   }
 
   @media screen and (max-width: $title-transform-display-breakpoint) {
     .home-page {
-      .title-container {
-        display: flex;
-        justify-content: space-between;
-      }
-
       .title {
-        transform-origin: right bottom;
-        transform: rotate(-90deg) translate(10px, -400%);
+        font-size: 16px;
+        transform-origin: right top;
+        transform: translateX(-115%) rotate(-90deg);
       }
 
       .subtitle {
-        transform-origin: right bottom;
-        transform: rotate(-90deg) translate(20px, 120%);
+        top: 15px;
+        left: auto;
+        right: 30px;
+        transform-origin: right top;
+        transform: rotate(-90deg);
       }
     }
   }
