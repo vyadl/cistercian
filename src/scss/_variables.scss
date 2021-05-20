@@ -19,21 +19,21 @@ $lines-transition-step: .05s;
 
 $title-transform-display-breakpoint: 700px;
 
-$display-breakpoint-on-multiple-1: 900px;
-$display-breakpoint-on-multiple-2: 700px;
-$display-breakpoint-on-multiple-3: 500px;
-$mobile-display-width-breakpoint: 420px;
-$mobile-xs-display-width-breakpoint: 340px;
+$display-breakpoint-xl: 900px;
+$display-breakpoint-l: 700px;
+$display-breakpoint-m: 500px;
+$display-breakpoint-s: 420px;
+$display-breakpoint-xs: 340px;
 
 $reducing-coefficient-on-multiple: .8;
 
-$digit-block-width-mobile: 110px;
-$digit-block-width-mobile-xs: 80px;
+$digit-block-width-s: 110px;
+$digit-block-width-xs: 80px;
 
-// scale coeficients 
+// scale coefficients 
 
-$scale-coeficient-on-breackpoint-1: .7;
-$scale-coeficient-on-breackpoint-2: .55;
-$scale-coeficient-on-breackpoint-3: .4;
-$scale-coeficient-on-mobile: .35;
-$scale-coeficient-on-mobile-xs: .25;
+$scale-coefficient-on-breakpoint-xl: .7;
+$scale-coefficient-on-breakpoint-l: .55;
+$scale-coefficient-on-breakpoint-m: .4;
+$scale-coefficient-on-breakpoint-s: .35;
+$scale-coefficient-on-breakpoint-xs: .25;

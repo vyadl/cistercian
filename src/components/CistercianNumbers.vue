@@ -6,7 +6,7 @@
         type="number"
         placeholder="your number"
         v-model.number="number"
-        @input.prevent="updateConvertation"
+        @input.prevent="runConvertation"
       >
       <div class="message-container">
         <span
@@ -17,7 +17,7 @@
     </form>
     <div
       class="cistercian-numbers-container"
-      :class="{multiple: digits.length > 1}"
+      :class="{ multiple: digits.length > 1 }"
     >
       <div
         class="cistercian-number"
@@ -61,7 +61,7 @@ export default {
     digits: [],
     isCistercianShown: false,
     lineTransition: 'separately-central',
-    digitsTransitionsOrder: ['1', '2', '3', '4'],
+    digitsTransitionsOrder: [1, 2, 3, 4],
     isValidationMessageShown: false,
     maxDecimal: MAX_DECIMAL,
   }),
@@ -81,7 +81,7 @@ export default {
         this.isValidationMessageShown = true;
       }
     },
-    defineDynamicPath() {
+    manageRoute() {
       if (this.number) {
         this.$router.push({
           name: 'homePageWithNumber',
@@ -91,7 +91,7 @@ export default {
         this.$router.push({ name: 'homePage' }).catch(() => {});
       }
     },
-    defineDigitsToRender() {
+    defineDigits() {
       const arrayFromNumber = String(this.number).split('');
       const updatedDigits = [];
 
@@ -112,14 +112,14 @@ export default {
     },
     convertToCistercian() {
       this.validateDecimalNumber();
-      this.defineDynamicPath();
-      this.defineDigitsToRender();
+      this.manageRoute();
+      this.defineDigits();
       this.isCistercianShown = true;
     },
     convertToCistercianDebounced: debounce(function convertToCistercianForDebounce() {
       this.convertToCistercian();
     }, DELAY_ON_INPUT),
-    updateConvertation() {
+    runConvertation() {
       this.isCistercianShown = false;
       this.isValidationMessageShown = false;
       this.shuffledigitsTransitionsOrder();
@@ -239,7 +239,7 @@ export default {
     .central-line {
       position: absolute;
       left: 50%;
-      width: $line-width + 1px;
+      width: $line-width;
       height: 100%;
       border-radius: $line-border-radius;
       background-color: $line-color;
@@ -388,77 +388,77 @@ export default {
     }
   }
 
-  @media screen and (max-width: $display-breakpoint-on-multiple-1) {
+  @media screen and (max-width: $display-breakpoint-xl) {
     .cistercian-numbers {
       .cistercian-numbers-container {
         &.multiple {
           transform-origin: center top;
-          transform: scale($scale-coeficient-on-breackpoint-1);
+          transform: scale($scale-coefficient-on-breakpoint-xl);
         }
       }
     }
   }
 
-  @media screen and (max-width: $display-breakpoint-on-multiple-2) {
+  @media screen and (max-width: $display-breakpoint-l) {
     .cistercian-numbers {
       .cistercian-numbers-container {
         &.multiple {
           transform-origin: center top;
-          transform: scale($scale-coeficient-on-breackpoint-2);
+          transform: scale($scale-coefficient-on-breakpoint-l);
         }
       }
     }
   }
 
-  @media screen and (max-width: $display-breakpoint-on-multiple-3) {
+  @media screen and (max-width: $display-breakpoint-m) {
     .cistercian-numbers {
       .cistercian-numbers-container {
         &.multiple {
           transform-origin: center top;
-          transform: scale($scale-coeficient-on-breackpoint-3);
+          transform: scale($scale-coefficient-on-breakpoint-m);
         }
       }
     }
   }
 
-  @media screen and (max-width: $mobile-display-width-breakpoint) {
+  @media screen and (max-width: $display-breakpoint-s) {
     .cistercian-numbers {
       .cistercian-numbers-container {
         &.multiple {
           transform-origin: center top;
-          transform: scale($scale-coeficient-on-mobile);
+          transform: scale($scale-coefficient-on-breakpoint-s);
         }
       }
 
       .cistercian-number {
-        width: $digit-block-width-mobile * 2;
-        height: $digit-block-width-mobile * 3;
+        width: $digit-block-width-s * 2;
+        height: $digit-block-width-s * 3;
       }
 
       .digit {
-        width: $digit-block-width-mobile;
-        height: $digit-block-width-mobile;
+        width: $digit-block-width-s;
+        height: $digit-block-width-s;
       }
     }
   }
 
-  @media screen and (max-width: $mobile-xs-display-width-breakpoint) {
+  @media screen and (max-width: $display-breakpoint-xs) {
     .cistercian-numbers {
       .cistercian-numbers-container {
         &.multiple {
           transform-origin: center top;
-          transform: scale($scale-coeficient-on-mobile-xs);
+          transform: scale($scale-coefficient-on-breakpoint-xs);
         }
       }
 
       .cistercian-number {
-        width: $digit-block-width-mobile-xs * 2;
-        height: $digit-block-width-mobile-xs * 3;
+        width: $digit-block-width-xs * 2;
+        height: $digit-block-width-xs * 3;
       }
 
       .digit {
-        width: $digit-block-width-mobile-xs;
-        height: $digit-block-width-mobile-xs;
+        width: $digit-block-width-xs;
+        height: $digit-block-width-xs;
       }
     }
   }
