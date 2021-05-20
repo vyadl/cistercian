@@ -1,19 +1,39 @@
+// base graphics
 
 $digit-block-width: 150px;
 $line-width: 15px;
 $line-border-radius: 15px;
-
-$title-transform-display-breakpoint: 700px;
-$mobile-display-width: 420px;
-$mobile-xs-display-width: 340px;
-$digit-block-width-mobile: 110px;
-$digit-block-width-mobile-xs: 80px;
-
-$lines-transition-duration: .3s;
-$lines-transition-step: .05s;
 
 $line-color: #000;
 $text-color: #222;
 $title-color: rgba($text-color, .3);
 $light-gray-color: #999;
 $dark-gray-color: #333;
+
+// transitions
+
+$lines-transition-duration: .3s;
+$lines-transition-step: .05s;
+
+// breakpoints
+
+$title-transform-display-breakpoint: 700px;
+
+$display-breakpoint-on-multiple-1: 900px;
+$display-breakpoint-on-multiple-2: 700px;
+$display-breakpoint-on-multiple-3: 500px;
+$mobile-display-width-breakpoint: 420px;
+$mobile-xs-display-width-breakpoint: 340px;
+
+$reducing-coefficient-on-multiple: .8;
+
+$digit-block-width-mobile: 110px;
+$digit-block-width-mobile-xs: 80px;
+
+// scale coeficients 
+
+$scale-coeficient-on-breackpoint-1: .7;
+$scale-coeficient-on-breackpoint-2: .55;
+$scale-coeficient-on-breackpoint-3: .4;
+$scale-coeficient-on-mobile: .35;
+$scale-coeficient-on-mobile-xs: .25;

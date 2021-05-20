@@ -18,9 +18,12 @@ export default {
 
 <style lang="scss">
   .home-page {
+    width: 100%;
+
     .title,
     .subtitle {
       position: absolute;
+      z-index: 1;
       left: 25px;
       width: fit-content;
       color: $title-color;
