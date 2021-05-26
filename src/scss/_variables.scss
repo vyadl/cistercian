@@ -4,36 +4,42 @@ $digit-block-width: 150px;
 $line-width: 15px;
 $line-border-radius: 15px;
 
-$line-color: #000;
-$text-color: #222;
-$title-color: rgba($text-color, .3);
-$light-gray-color: #999;
-$dark-gray-color: #333;
+$colors: (
+  'line': #000,
+  'text': #222,
+  'title': rgba(#222, .3),
+  'shadow': rgba(#000, .3),
+  'light-grey': #999,
+  'dark-grey': #333,
+);
 
 // transitions
 
-$lines-transition-duration: .3s;
-$lines-transition-step: .05s;
+$lines-transitions: (
+  'duration': .3s,
+  'step': .05s,
+);
 
 // breakpoints
 
-$title-transform-display-breakpoint: 700px;
-
-$display-breakpoint-xl: 900px;
-$display-breakpoint-l: 700px;
-$display-breakpoint-m: 500px;
-$display-breakpoint-s: 420px;
-$display-breakpoint-xs: 340px;
+$display-breakpoints: (
+  'xl': 900px,
+  'l': 700px,
+  'm': 500px,
+  's': 420px,
+  'xs': 340px,
+);
 
 $reducing-coefficient-on-multiple: .8;
-
 $digit-block-width-s: 110px;
 $digit-block-width-xs: 80px;
 
-// scale coefficients 
+// scale coefficients
 
-$scale-coefficient-on-breakpoint-xl: .7;
-$scale-coefficient-on-breakpoint-l: .55;
-$scale-coefficient-on-breakpoint-m: .4;
-$scale-coefficient-on-breakpoint-s: .35;
-$scale-coefficient-on-breakpoint-xs: .25;
+$scale-coefficients: (
+  'xl': .7,
+  'l': .55,
+  'm': .4,
+  's': .35,
+  'xs': .25,
+);

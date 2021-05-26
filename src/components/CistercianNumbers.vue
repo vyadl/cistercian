@@ -15,28 +15,30 @@
         >max number - {{ maxDecimal }}</span>
       </div>
     </form>
-    <div
-      class="cistercian-numbers-container"
-      :class="{ multiple: digits.length > 1 }"
-    >
       <div
-        class="cistercian-number"
-        v-for="(cistercianDigit, index) in digits"
-        :key="index"
+        class="cistercian-numbers-container"
+        :class="{ multiple: digits.length > 1 }"
       >
-        <transition :name="lineTransition">
-          <div
-            class="central-line"
-            v-if="isCistercianShown && number"
-          ></div>
-        </transition>
+        <div
+          class="cistercian-number"
+          v-for="(cistercianDigit, index) in digits"
+          :key="index"
+        >
+          <transition :name="`${transitionModeComputed}-central`">
+            <div
+              class="central-line"
+              v-if="isCistercianShown && number"
+            ></div>
+          </transition>
           <div
             class="digit"
             :class="[digit, `numeral-${numeral}`]"
-            v-for="(numeral, digit, index) in cistercianDigit"
+            v-for="(numeral, digit, index) in cistercianDigit.digitsList"
             :key="digit"
           >
-            <transition :name="`separately-${digitsTransitionsOrder[index]}`">
+            <transition :name="transitionModeComputed === 'together'
+              ? transitionModeComputed : `separately-${cistercianDigit.transitions[index]}`"
+            >
               <div v-if="isCistercianShown">
                 <div class="line first"></div>
                 <div class="line second"></div>
@@ -44,27 +46,34 @@
               </div>
             </transition>
           </div>
+        </div>
       </div>
-    </div>
   </div>
 </template>
 
 <script>
 import { debounce, shuffleArray } from '@/utils/utils';
-import { DELAY_ON_INPUT } from 'root/config';
+import { DELAY_ON_INPUT, DEFAULT_TRANSITION_MODE } from 'root/config';
 
 const MAX_DECIMAL = 999999999999;
 
 export default {
+  props: {
+    transitionMode: String,
+  },
   data: () => ({
     number: null,
     digits: [],
     isCistercianShown: false,
-    lineTransition: 'separately-central',
     digitsTransitionsOrder: [1, 2, 3, 4],
     isValidationMessageShown: false,
     maxDecimal: MAX_DECIMAL,
   }),
+  computed: {
+    transitionModeComputed() {
+      return this.transitionMode || DEFAULT_TRANSITION_MODE;
+    },
+  },
   mounted() {
     if (this.$route.params.number) {
       this.number = +this.$route.params.number;
@@ -72,12 +81,9 @@ export default {
     }
   },
   methods: {
-    shuffledigitsTransitionsOrder() {
-      this.digitsTransitionsOrder = shuffleArray(this.digitsTransitionsOrder);
-    },
     validateDecimalNumber() {
       if (this.number > MAX_DECIMAL) {
-        this.number = MAX_DECIMAL;
+        this.number = String(this.number).slice(0, String(MAX_DECIMAL).length);
         this.isValidationMessageShown = true;
       }
     },
@@ -101,10 +107,13 @@ export default {
           : arrayFromNumber.splice(0).join('');
 
         updatedDigits.unshift({
-          units: cistercianDigit % 10,
-          tens: Math.floor((cistercianDigit % 100) / 10),
-          hundreds: Math.floor((cistercianDigit % 1000) / 100),
-          thousands: Math.floor(cistercianDigit / 1000),
+          digitsList: {
+            units: cistercianDigit % 10,
+            tens: Math.floor((cistercianDigit % 100) / 10),
+            hundreds: Math.floor((cistercianDigit % 1000) / 100),
+            thousands: Math.floor(cistercianDigit / 1000),
+          },
+          transitions: shuffleArray(this.digitsTransitionsOrder),
         });
       }
 
@@ -114,7 +123,9 @@ export default {
       this.validateDecimalNumber();
       this.manageRoute();
       this.defineDigits();
-      this.isCistercianShown = true;
+      this.$nextTick(() => {
+        this.isCistercianShown = true;
+      });
     },
     convertToCistercianDebounced: debounce(function convertToCistercianForDebounce() {
       this.convertToCistercian();
@@ -122,7 +133,6 @@ export default {
     runConvertation() {
       this.isCistercianShown = false;
       this.isValidationMessageShown = false;
-      this.shuffledigitsTransitionsOrder();
       this.convertToCistercianDebounced();
     },
   },
@@ -149,13 +159,13 @@ export default {
       width: 180px;
       margin-bottom: 5px;
       padding-bottom: 3px;
-      border-bottom: 1px solid $light-gray-color;
+      border-bottom: 1px solid map-get($colors, 'dark-grey');
       text-align: center;
-      color: $text-color;
+      color: map-get($colors, 'text');
       transition: border-color .2s;
 
       &:focus {
-        border-color: $dark-gray-color;
+        border-color: map-get($colors, 'dark-grey');
 
         &::-webkit-input-placeholder {
           color: transparent;
@@ -242,7 +252,7 @@ export default {
       width: $line-width;
       height: 100%;
       border-radius: $line-border-radius;
-      background-color: $line-color;
+      background-color: map-get($colors, 'line');
       transform: translateX(-50%);
     }
 
@@ -252,7 +262,7 @@ export default {
       width: 100%;
       height: $line-width;
       border-radius: $line-border-radius;
-      background-color: $line-color;
+      background-color: map-get($colors, 'line');
     }
 
     .numeral-1 {
@@ -388,45 +398,45 @@ export default {
     }
   }
 
-  @media screen and (max-width: $display-breakpoint-xl) {
+  @media screen and (max-width: map-get($display-breakpoints, 'xl')) {
     .cistercian-numbers {
       .cistercian-numbers-container {
         &.multiple {
           transform-origin: center top;
-          transform: scale($scale-coefficient-on-breakpoint-xl);
+          transform: scale(map-get($scale-coefficients, 'xl'));
         }
       }
     }
   }
 
-  @media screen and (max-width: $display-breakpoint-l) {
+  @media screen and (max-width: map-get($display-breakpoints, 'l')) {
     .cistercian-numbers {
       .cistercian-numbers-container {
         &.multiple {
           transform-origin: center top;
-          transform: scale($scale-coefficient-on-breakpoint-l);
+          transform: scale(map-get($scale-coefficients, 'l'));
         }
       }
     }
   }
 
-  @media screen and (max-width: $display-breakpoint-m) {
+  @media screen and (max-width: map-get($display-breakpoints, 'm')) {
     .cistercian-numbers {
       .cistercian-numbers-container {
         &.multiple {
           transform-origin: center top;
-          transform: scale($scale-coefficient-on-breakpoint-m);
+          transform: scale(map-get($scale-coefficients, 'm'));
         }
       }
     }
   }
 
-  @media screen and (max-width: $display-breakpoint-s) {
+  @media screen and (max-width: map-get($display-breakpoints, 's')) {
     .cistercian-numbers {
       .cistercian-numbers-container {
         &.multiple {
           transform-origin: center top;
-          transform: scale($scale-coefficient-on-breakpoint-s);
+          transform: scale(map-get($scale-coefficients, 's'));
         }
       }
 
@@ -442,12 +452,12 @@ export default {
     }
   }
 
-  @media screen and (max-width: $display-breakpoint-xs) {
+  @media screen and (max-width: map-get($display-breakpoints, 'xs')) {
     .cistercian-numbers {
       .cistercian-numbers-container {
         &.multiple {
           transform-origin: center top;
-          transform: scale($scale-coefficient-on-breakpoint-xs);
+          transform: scale(map-get($scale-coefficients, 'xs'));
         }
       }
 
