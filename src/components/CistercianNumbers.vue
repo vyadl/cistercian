@@ -83,7 +83,7 @@ export default {
   methods: {
     validateDecimalNumber() {
       if (this.number > MAX_DECIMAL) {
-        this.number = String(this.number).slice(0, MAX_DECIMAL.length);
+        this.number = String(this.number).slice(0, String(MAX_DECIMAL).length);
         this.isValidationMessageShown = true;
       }
     },
