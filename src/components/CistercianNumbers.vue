@@ -46,12 +46,14 @@
           </div>
       </div>
     </div>
+    <button @click="doImage">O</button>
   </div>
 </template>
 
 <script>
 import { debounce, shuffleArray } from '@/utils/utils';
 import { DELAY_ON_INPUT } from 'root/config';
+import domtoimage from 'dom-to-image';
 
 const MAX_DECIMAL = 999999999999;
 
@@ -125,6 +127,21 @@ export default {
       this.shuffledigitsTransitionsOrder();
       this.convertToCistercianDebounced();
     },
+    doImage() {
+      const cistercianNumber = document.querySelector('.cistercian-numbers-container');
+      const imageName = String(this.number);
+
+      domtoimage.toPng(cistercianNumber)
+        .then(function (imageData) { //eslint-disable-line
+          const link = document.createElement('a');
+          link.href = imageData;
+          link.download = imageName;
+          link.click();
+        })
+        .catch(function (error) { //eslint-disable-line
+          console.error('oops, something went wrong!', error);
+        });
+    },
   },
 };
 </script>
@@ -179,6 +196,8 @@ export default {
     .cistercian-numbers-container {
       display: flex;
       justify-content: center;
+      padding: 30px;
+      background-color: white;
 
       &.multiple {
         .cistercian-number {
