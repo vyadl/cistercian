@@ -53,10 +53,9 @@
 
 <script>
 import { debounce, shuffleArray } from '@/utils/utils';
-import { DELAY_ON_INPUT } from 'root/config';
+import { DELAY_ON_INPUT, DEFAULT_TRANSITION_MODE } from 'root/config';
 
 const MAX_DECIMAL = 999999999999;
-const DEFAULT_TRANSITION_MODE = 'separately';
 
 export default {
   props: {

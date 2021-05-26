@@ -19,9 +19,11 @@
 </template>
 
 <script>
+import { DEFAULT_TRANSITION_MODE } from 'root/config';
+
 export default {
   data: () => ({
-    transitionMode: 'separately',
+    transitionMode: DEFAULT_TRANSITION_MODE,
   }),
   methods: {
     changeTransitionMode(mode) {
