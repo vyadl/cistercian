@@ -57,7 +57,7 @@ export default {
       padding: 10px;
       font-size: 16px;
       cursor: pointer;
-      transition: all .3s;
+      transition: text-shadow .3s;
 
       &.active {
         font-weight: 500;

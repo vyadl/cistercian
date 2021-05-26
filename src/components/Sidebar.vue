@@ -10,7 +10,7 @@
       >settings</button>
     </div>
     <div class="sidebar-content">
-      <CistercianSettings @change-transition-mode="a"/>
+      <CistercianSettings @change-transition-mode="changeTransitionMode"/>
     </div>
   </div>
 </template>
@@ -38,7 +38,7 @@ export default {
       this.isSidebarShown = true;
       this.$emit('change-sidebar-state', true);
     },
-    a($event) {
+    changeTransitionMode($event) {
       this.$emit('change-transition-mode', $event);
     },
   },

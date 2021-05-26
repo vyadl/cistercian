@@ -4,13 +4,13 @@
     <h2 class="subtitle">decimal to cistercian</h2>
     <div
       class="main-content"
-      :class="{ paralax: sidebarState }"
+      :class="{ parallax: isSidebarShown }"
     >
       <CistercianNumbers :transition-mode="transitionMode" />
     </div>
     <Sidebar
-      @change-sidebar-state="sidebarState = $event"
-      @change-transition-mode="b"
+      @change-sidebar-state="isSidebarShown = $event"
+      @change-transition-mode="transitionMode = $event"
     />
   </div>
 </template>
@@ -25,14 +25,9 @@ export default {
     Sidebar,
   },
   data: () => ({
-    sidebarState: '',
+    isSidebarShown: false,
     transitionMode: '',
   }),
-  methods: {
-    b($event) {
-      this.transitionMode = $event;
-    },
-  },
 };
 </script>
 
@@ -62,7 +57,7 @@ export default {
 
     .main-content {
       transition: transform .5s;
-      &.paralax {
+      &.parallax {
         transform: translateX(-20px);
       }
     }

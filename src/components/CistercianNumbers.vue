@@ -27,7 +27,7 @@
           <transition :name="`${transitionModeComputed}-central`">
             <div
               class="central-line"
-              v-if="isCistercianShown && number && cistercianDigit"
+              v-if="isCistercianShown && number"
             ></div>
           </transition>
           <div
@@ -39,7 +39,7 @@
             <transition :name="transitionModeComputed === 'together'
               ? transitionModeComputed : `separately-${cistercianDigit.transitions[index]}`"
             >
-              <div v-if="isCistercianShown && cistercianDigit">
+              <div v-if="isCistercianShown">
                 <div class="line first"></div>
                 <div class="line second"></div>
                 <div class="line third"></div>
@@ -56,6 +56,7 @@ import { debounce, shuffleArray } from '@/utils/utils';
 import { DELAY_ON_INPUT, DEFAULT_TRANSITION_MODE } from 'root/config';
 
 const MAX_DECIMAL = 999999999999;
+const MAX_DECIMAL_LENGTH = 12;
 
 export default {
   props: {
@@ -83,7 +84,7 @@ export default {
   methods: {
     validateDecimalNumber() {
       if (this.number > MAX_DECIMAL) {
-        this.number = String(this.number).slice(0, 12);
+        this.number = String(this.number).slice(0, MAX_DECIMAL_LENGTH);
         this.isValidationMessageShown = true;
       }
     },
