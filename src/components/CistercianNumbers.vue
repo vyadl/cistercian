@@ -56,7 +56,6 @@ import { debounce, shuffleArray } from '@/utils/utils';
 import { DELAY_ON_INPUT, DEFAULT_TRANSITION_MODE } from 'root/config';
 
 const MAX_DECIMAL = 999999999999;
-const MAX_DECIMAL_LENGTH = 12;
 
 export default {
   props: {
@@ -84,7 +83,7 @@ export default {
   methods: {
     validateDecimalNumber() {
       if (this.number > MAX_DECIMAL) {
-        this.number = String(this.number).slice(0, MAX_DECIMAL_LENGTH);
+        this.number = String(this.number).slice(0, MAX_DECIMAL.length);
         this.isValidationMessageShown = true;
       }
     },
