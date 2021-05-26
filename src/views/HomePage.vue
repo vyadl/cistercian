@@ -2,16 +2,36 @@
   <div class="home-page">
     <h1 class="title">numerals</h1>
     <h2 class="subtitle">decimal to cistercian</h2>
-    <CistercianNumbers />
+    <div
+      class="main-content"
+      :class="{ paralax: sidebarState }"
+    >
+      <CistercianNumbers :transition-mode="transitionMode" />
+    </div>
+    <Sidebar
+      @change-sidebar-state="sidebarState = $event"
+      @change-transition-mode="b"
+    />
   </div>
 </template>
 
 <script>
 import CistercianNumbers from '@/components/CistercianNumbers.vue';
+import Sidebar from '@/components/Sidebar.vue';
 
 export default {
   components: {
     CistercianNumbers,
+    Sidebar,
+  },
+  data: () => ({
+    sidebarState: '',
+    transitionMode: '',
+  }),
+  methods: {
+    b($event) {
+      this.transitionMode = $event;
+    },
   },
 };
 </script>
@@ -26,7 +46,7 @@ export default {
       z-index: 1;
       left: 25px;
       width: fit-content;
-      color: $title-color;
+      color: map-get($colors, 'title');
       cursor: default;
     }
 
@@ -39,9 +59,16 @@ export default {
       top: 45px;
       font-size: 12px;
     }
+
+    .main-content {
+      transition: transform .5s;
+      &.paralax {
+        transform: translateX(-20px);
+      }
+    }
   }
 
-  @media screen and (max-width: $title-transform-display-breakpoint) {
+  @media screen and (max-width: map-get($display-breakpoints, 'l')) {
     .home-page {
       .title {
         font-size: 16px;
