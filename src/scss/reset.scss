@@ -24,6 +24,15 @@ button {
   letter-spacing: inherit;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+
+  &:active {
+    color: inherit;
+  }
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   display: none;

@@ -15,9 +15,11 @@
         >max number - {{ maxDecimal }}</span>
       </div>
     </form>
+    <div class="cistercian-block">
       <div
         class="cistercian-numbers-container"
         :class="{ multiple: digits.length > 1 }"
+        ref="image"
       >
         <div
           class="cistercian-number"
@@ -48,12 +50,27 @@
           </div>
         </div>
       </div>
+      <div
+        class="download-link"
+        v-if="isCistercianShown && number"
+      >download as <a
+          :href="linkHref"
+          :download="number"
+          @click="downloadAsImage('toPng', $event)"
+        >png</a> / <a
+          :href="linkHref"
+          :download="number"
+          @click="downloadAsImage('toSvg', $event)"
+        >svg</a>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import { debounce, shuffleArray } from '@/utils/utils';
 import { DELAY_ON_INPUT, DEFAULT_TRANSITION_MODE } from 'root/config';
+import domtoimage from 'dom-to-image';
 
 const MAX_DECIMAL = 999999999999;
 
@@ -68,6 +85,7 @@ export default {
     digitsTransitionsOrder: [1, 2, 3, 4],
     isValidationMessageShown: false,
     maxDecimal: MAX_DECIMAL,
+    linkHref: 'http://',
   }),
   computed: {
     transitionModeComputed() {
@@ -135,6 +153,22 @@ export default {
       this.isValidationMessageShown = false;
       this.convertToCistercianDebounced();
     },
+    downloadAsImage(toExtension, event) {
+      if (this.linkHref === 'http://') {
+        event.preventDefault();
+        domtoimage[toExtension](this.$refs.image)
+          .then(imageData => {
+            this.linkHref = imageData;
+            this.$nextTick(() => {
+              event.target.click();
+            });
+          });
+      } else {
+        this.$nextTick(() => {
+          this.linkHref = 'http://';
+        });
+      }
+    },
   },
 };
 </script>
@@ -147,12 +181,12 @@ export default {
     margin-left: auto;
     margin-right: auto;
     padding: 40px;
+    padding-bottom: 30px;
 
     .form-number {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-bottom: 40px;
     }
 
     .input-number {
@@ -186,9 +220,30 @@ export default {
       font-size: 14px;
     }
 
+    .cistercian-block {
+      display: flex;
+      flex-direction: column;
+      &:hover {
+        .download-link {
+          opacity: 1;
+        }
+      }
+    }
+
+    .download-link {
+      align-self: flex-end;
+      padding-right: 30px;
+      font-size: 14px;
+      color: map-get($colors, 'light-grey');
+      opacity: 0;
+      transition: opacity .3s;
+    }
+
     .cistercian-numbers-container {
       display: flex;
       justify-content: center;
+      padding: 30px;
+      background-color: white;
 
       &.multiple {
         .cistercian-number {
