@@ -14,10 +14,12 @@
           v-if="isValidationMessageShown"
         >max number - {{ maxDecimal }}</span>
       </div>
-    <form>
+    </form>
+    <div class="cistercian-block">
       <div
         class="cistercian-numbers-container"
         :class="{ multiple: digits.length > 1 }"
+        ref="image"
       >
         <div
           class="cistercian-number"
@@ -48,8 +50,24 @@
           </div>
         </div>
       </div>
-    </form>
-    <button @click="doImage">O</button>
+      <div
+        class="download-link"
+        v-if="isCistercianShown && number"
+      >download as
+        <a
+          :href="linkHref"
+          :download="number"
+          @click="downloadAsPNG"
+          ref="linkPNG"
+        > png </a>/
+        <a
+          :href="linkHref"
+          :download="number"
+          @click="downloadAsSVG"
+          ref="linkSVG"
+        > svg</a>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -71,6 +89,7 @@ export default {
     digitsTransitionsOrder: [1, 2, 3, 4],
     isValidationMessageShown: false,
     maxDecimal: MAX_DECIMAL,
+    linkHref: 'http://',
   }),
   computed: {
     transitionModeComputed() {
@@ -138,20 +157,37 @@ export default {
       this.isValidationMessageShown = false;
       this.convertToCistercianDebounced();
     },
-    doImage() {
-      const cistercianNumber = document.querySelector('.cistercian-numbers-container');
-      const imageName = String(this.number);
-
-      domtoimage.toPng(cistercianNumber)
-        .then(function (imageData) { //eslint-disable-line
-          const link = document.createElement('a');
-          link.href = imageData;
-          link.download = imageName;
-          link.click();
-        })
-        .catch(function (error) { //eslint-disable-line
-          console.error('oops, something went wrong!', error);
+    downloadAsPNG(event) {
+      if (this.linkHref === 'http://') {
+        event.preventDefault();
+        domtoimage.toPng(this.$refs.image)
+          .then(imageData => {
+            this.linkHref = imageData;
+            this.$nextTick(() => {
+              this.$refs.linkPNG.click();
+            });
+          });
+      } else {
+        this.$nextTick(() => {
+          this.linkHref = 'http://';
         });
+      }
+    },
+    downloadAsSVG(event) {
+      if (this.linkHref === 'http://') {
+        event.preventDefault();
+        domtoimage.toSvg(this.$refs.image)
+          .then(imageData => {
+            this.linkHref = imageData;
+            this.$nextTick(() => {
+              this.$refs.linkSVG.click();
+            });
+          });
+      } else {
+        this.$nextTick(() => {
+          this.linkHref = 'http://';
+        });
+      }
     },
   },
 };
@@ -165,12 +201,12 @@ export default {
     margin-left: auto;
     margin-right: auto;
     padding: 40px;
+    padding-bottom: 30px;
 
     .form-number {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-bottom: 40px;
     }
 
     .input-number {
@@ -202,6 +238,25 @@ export default {
 
     .message {
       font-size: 14px;
+    }
+
+    .cistercian-block {
+      display: flex;
+      flex-direction: column;
+      &:hover {
+        .download-link {
+          opacity: 1;
+        }
+      }
+    }
+
+    .download-link {
+      align-self: flex-end;
+      padding-right: 30px;
+      font-size: 14px;
+      color: map-get($colors, 'light-grey');
+      opacity: 0;
+      transition: opacity .3s;
     }
 
     .cistercian-numbers-container {
