@@ -53,19 +53,15 @@
       <div
         class="download-link"
         v-if="isCistercianShown && number"
-      >download as
-        <a
+      >download as <a
           :href="linkHref"
           :download="number"
-          @click="downloadAsPNG"
-          ref="linkPNG"
-        > png </a>/
-        <a
+          @click="downloadAsImage('toPng', $event)"
+        >png</a> / <a
           :href="linkHref"
           :download="number"
-          @click="downloadAsSVG"
-          ref="linkSVG"
-        > svg</a>
+          @click="downloadAsImage('toSvg', $event)"
+        >svg</a>
       </div>
     </div>
   </div>
@@ -157,30 +153,14 @@ export default {
       this.isValidationMessageShown = false;
       this.convertToCistercianDebounced();
     },
-    downloadAsPNG(event) {
+    downloadAsImage(toExtension, event) {
       if (this.linkHref === 'http://') {
         event.preventDefault();
-        domtoimage.toPng(this.$refs.image)
+        domtoimage[toExtension](this.$refs.image)
           .then(imageData => {
             this.linkHref = imageData;
             this.$nextTick(() => {
-              this.$refs.linkPNG.click();
-            });
-          });
-      } else {
-        this.$nextTick(() => {
-          this.linkHref = 'http://';
-        });
-      }
-    },
-    downloadAsSVG(event) {
-      if (this.linkHref === 'http://') {
-        event.preventDefault();
-        domtoimage.toSvg(this.$refs.image)
-          .then(imageData => {
-            this.linkHref = imageData;
-            this.$nextTick(() => {
-              this.$refs.linkSVG.click();
+              event.target.click();
             });
           });
       } else {
