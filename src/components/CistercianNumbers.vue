@@ -15,54 +15,52 @@
         >max number - {{ maxDecimal }}</span>
       </div>
     </form>
-    <div class="cistercian-block">
+    <div
+      class="cistercian-numbers-container"
+      :class="{ multiple: digits.length > 1 }"
+      ref="cistercianNumber"
+    >
       <div
-        class="cistercian-numbers-container"
-        :class="{ multiple: digits.length > 1 }"
-        ref="image"
+        class="cistercian-number"
+        v-for="(cistercianDigit, index) in digits"
+        :key="index"
       >
-        <div
-          class="cistercian-number"
-          v-for="(cistercianDigit, index) in digits"
-          :key="index"
-        >
-          <transition :name="`${transitionModeComputed}-central`">
-            <div
-              class="central-line"
-              v-if="isCistercianShown && number"
-            ></div>
-          </transition>
+        <transition :name="`${transitionModeComputed}-central`">
           <div
-            class="digit"
-            :class="[digit, `numeral-${numeral}`]"
-            v-for="(numeral, digit, index) in cistercianDigit.digitsList"
-            :key="digit"
+            class="central-line"
+            v-if="isCistercianShown && number"
+          ></div>
+        </transition>
+        <div
+          class="digit"
+          :class="[digit, `numeral-${numeral}`]"
+          v-for="(numeral, digit, index) in cistercianDigit.digitsList"
+          :key="digit"
+        >
+          <transition :name="transitionModeComputed === 'together'
+            ? transitionModeComputed : `separately-${cistercianDigit.transitions[index]}`"
           >
-            <transition :name="transitionModeComputed === 'together'
-              ? transitionModeComputed : `separately-${cistercianDigit.transitions[index]}`"
-            >
-              <div v-if="isCistercianShown">
-                <div class="line first"></div>
-                <div class="line second"></div>
-                <div class="line third"></div>
-              </div>
-            </transition>
-          </div>
+            <div v-if="isCistercianShown">
+              <div class="line first"></div>
+              <div class="line second"></div>
+              <div class="line third"></div>
+            </div>
+          </transition>
         </div>
       </div>
-      <div
+    </div>
+    <div class="download-links-container">
+      <span v-if="number">download as <a
         class="download-link"
-        v-if="isCistercianShown && number"
-      >download as <a
-          :href="linkHref"
-          :download="number"
-          @click="downloadAsImage('toPng', $event)"
-        >png</a> / <a
-          :href="linkHref"
-          :download="number"
-          @click="downloadAsImage('toSvg', $event)"
-        >svg</a>
-      </div>
+        :href="linkHref"
+        :download="number"
+        @click="downloadAsImage('toPng', $event)"
+      >png</a> / <a
+        class="download-link"
+        :href="linkHref"
+        :download="number"
+        @click="downloadAsImage('toSvg', $event)"
+      >svg</a></span>
     </div>
   </div>
 </template>
@@ -156,7 +154,7 @@ export default {
     downloadAsImage(toExtension, event) {
       if (this.linkHref === 'http://') {
         event.preventDefault();
-        domtoimage[toExtension](this.$refs.image)
+        domtoimage[toExtension](this.$refs.cistercianNumber)
           .then(imageData => {
             this.linkHref = imageData;
             this.$nextTick(() => {
@@ -180,13 +178,14 @@ export default {
     align-items: center;
     margin-left: auto;
     margin-right: auto;
-    padding: 40px;
-    padding-bottom: 30px;
+    padding: 40px 40px 0;
 
     .form-number {
       display: flex;
       flex-direction: column;
       align-items: center;
+      order: 0;
+      margin-bottom: 10px;
     }
 
     .input-number {
@@ -220,28 +219,29 @@ export default {
       font-size: 14px;
     }
 
-    .cistercian-block {
-      display: flex;
-      flex-direction: column;
-      &:hover {
-        .download-link {
-          opacity: 1;
-        }
-      }
-    }
-
-    .download-link {
-      align-self: flex-end;
-      padding-right: 30px;
+    .download-links-container {
+      order: 1;
+      height: 20px;
       font-size: 14px;
       color: map-get($colors, 'light-grey');
       opacity: 0;
       transition: opacity .3s;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    .download-link {
+      &:hover {
+        color: map-get($colors, 'dark-grey');
+      }
     }
 
     .cistercian-numbers-container {
       display: flex;
       justify-content: center;
+      order: 2;
       padding: 30px;
       background-color: white;
 
@@ -259,6 +259,12 @@ export default {
         .cistercian-number {
           width: $digit-block-width * 2 * $reducing-coefficient-on-multiple;
           height: $digit-block-width * 3 * $reducing-coefficient-on-multiple;
+        }
+      }
+
+      &:hover {
+        + .download-links-container {
+          opacity: 1;
         }
       }
     }
