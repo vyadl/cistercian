@@ -54,17 +54,29 @@ export default {
     }
 
     .transition-mode-button {
-      padding: 10px;
+      display: inline-block;
+      padding: 0;
+      border-bottom: 1px solid white;
+      line-height: 15.5px;
       font-size: 16px;
+      text-shadow:
+        -.5px .5px white,
+        -.5px -.5px white,
+        .5px -.5px white,
+        .5px .5px white;
       cursor: pointer;
-      transition: text-shadow .3s;
+      transition: .3s;
 
       &.active {
-        font-weight: 500;
+        border-color: map-get($colors , 'text');
       }
 
       &:hover {
-        text-shadow: 0px 3px 3px map-get($colors, 'shadow');
+        color: map-get($colors, 'light-grey');
+
+        &.active {
+          border-color: map-get($colors , 'light-grey');
+        }
       }
     }
   }
@@ -76,7 +88,8 @@ export default {
       }
 
       .transition-mode-button {
-        font-size: 14px;
+        line-height: 11.5px;
+        font-size: 12px;
       }
     }
   }
