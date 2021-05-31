@@ -61,26 +61,45 @@ export default {
     &.show {
         transform: translateX(0);
         box-shadow: 15px 0 30px 0 map-get($colors, 'shadow');
+
+        .open-button {
+          padding-bottom: 10px;
+        }
     }
 
     .buttons-container {
       position: fixed;
-      bottom: 130px;
+      bottom: 160px;
       left: 0;
       transform-origin: right bottom;
       transform: translateX(-100%) rotate(-90deg);
     }
 
     .open-button {
-      padding: 10px 15px;
+      padding: 10px 15px 25px;
       font-size: 16px;
+      letter-spacing: .6px;
+      color: map-get($colors, 'grey');
       cursor: pointer;
+      transition: padding .3s;
+
+      &:hover {
+        color: black;
+      }
     }
 
     .sidebar-content {
       height: 100vh;
       padding: 40px 30px 100px;
       overflow: auto;
+    }
+  }
+
+  @media screen and (max-width: map-get($display-breakpoints, 'l')) {
+    .sidebar {
+      .open-button {
+        padding-bottom: 10px;
+      }
     }
   }
 
