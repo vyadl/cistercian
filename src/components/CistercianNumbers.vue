@@ -18,7 +18,7 @@
     <div
       class="cistercian-numbers-container"
       :class="{ multiple: digits.length > 1 }"
-      ref="image"
+      ref="cistarcianNumber"
     >
       <div
         class="cistercian-number"
@@ -154,7 +154,7 @@ export default {
     downloadAsImage(toExtension, event) {
       if (this.linkHref === 'http://') {
         event.preventDefault();
-        domtoimage[toExtension](this.$refs.image)
+        domtoimage[toExtension](this.$refs.cistarcianNumber)
           .then(imageData => {
             this.linkHref = imageData;
             this.$nextTick(() => {
@@ -178,8 +178,7 @@ export default {
     align-items: center;
     margin-left: auto;
     margin-right: auto;
-    padding: 40px;
-    padding-bottom: 0;
+    padding: 40px 40px 0;
 
     .form-number {
       display: flex;
