@@ -49,18 +49,19 @@
         </div>
       </div>
     </div>
-    <div class="download-links-container">
-      <span v-if="number">download as <a
-        class="download-link"
-        :href="linkHref"
-        :download="number"
-        @click="downloadAsImage('toPng', $event)"
-      >png</a> / <a
-        class="download-link"
-        :href="linkHref"
-        :download="number"
-        @click="downloadAsImage('toSvg', $event)"
-      >svg</a></span>
+    <div class="links-container">
+      <span v-if="number">
+        <a
+          class="link"
+          :href="linkHref"
+          :download="number"
+          @click="downloadAsImage"
+        >download</a> / <a
+          class="link"
+          :href="linkHref"
+          @click="copyImage"
+        >copy</a>
+      </span>
     </div>
   </div>
 </template>
@@ -71,6 +72,7 @@ import { DELAY_ON_INPUT, DEFAULT_TRANSITION_MODE } from 'root/config';
 import domtoimage from 'dom-to-image';
 
 const MAX_DECIMAL = 999999999999;
+const { ClipboardItem } = window;
 
 export default {
   props: {
@@ -151,10 +153,10 @@ export default {
       this.isValidationMessageShown = false;
       this.convertToCistercianDebounced();
     },
-    downloadAsImage(toExtension, event) {
+    downloadAsImage(event) {
       if (this.linkHref === 'http://') {
         event.preventDefault();
-        domtoimage[toExtension](this.$refs.cistercianNumber)
+        domtoimage.toJpeg(this.$refs.cistercianNumber)
           .then(imageData => {
             this.linkHref = imageData;
             this.$nextTick(() => {
@@ -166,6 +168,15 @@ export default {
           this.linkHref = 'http://';
         });
       }
+    },
+    copyImage(event) {
+      event.preventDefault();
+      domtoimage.toBlob(this.$refs.cistercianNumber)
+        .then(imageData => {
+          const item = new ClipboardItem({ 'image/png': imageData });
+
+          navigator.clipboard.write([item]);
+        });
     },
   },
 };
@@ -184,7 +195,6 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
-      order: 0;
       margin-bottom: 10px;
     }
 
@@ -219,9 +229,8 @@ export default {
       font-size: 14px;
     }
 
-    .download-links-container {
-      order: 1;
-      height: 20px;
+    .links-container {
+      padding: 5px;
       font-size: 14px;
       color: map-get($colors, 'light-grey');
       opacity: 0;
@@ -232,7 +241,7 @@ export default {
       }
     }
 
-    .download-link {
+    .link {
       &:hover {
         color: map-get($colors, 'dark-grey');
       }
@@ -241,7 +250,6 @@ export default {
     .cistercian-numbers-container {
       display: flex;
       justify-content: center;
-      order: 2;
       padding: 30px;
       background-color: white;
 
@@ -263,7 +271,7 @@ export default {
       }
 
       &:hover {
-        + .download-links-container {
+        + .links-container {
           opacity: 1;
         }
       }
@@ -465,6 +473,10 @@ export default {
         &.multiple {
           transform-origin: center top;
           transform: scale(map-get($scale-coefficients, 'xl'));
+
+          + .links-container {
+            transform: translateY(-120px);
+          }
         }
       }
     }
@@ -476,6 +488,10 @@ export default {
         &.multiple {
           transform-origin: center top;
           transform: scale(map-get($scale-coefficients, 'l'));
+
+          + .links-container {
+            transform: translateY(-175px);
+          }
         }
       }
     }
@@ -487,6 +503,11 @@ export default {
         &.multiple {
           transform-origin: center top;
           transform: scale(map-get($scale-coefficients, 'm'));
+
+          + .links-container {
+            font-size: 12px;
+            transform: translateY(-240px);
+          }
         }
       }
     }
@@ -498,6 +519,11 @@ export default {
         &.multiple {
           transform-origin: center top;
           transform: scale(map-get($scale-coefficients, 's'));
+
+          + .links-container {
+            font-size: 11px;
+            transform: translateY(-255px);
+          }
         }
       }
 
@@ -519,6 +545,11 @@ export default {
         &.multiple {
           transform-origin: center top;
           transform: scale(map-get($scale-coefficients, 'xs'));
+
+          + .links-container {
+            font-size: 10px;
+            transform: translateY(-290px);
+          }
         }
       }
 
