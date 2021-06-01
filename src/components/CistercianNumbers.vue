@@ -54,7 +54,7 @@
         <a
           class="link"
           :href="linkHref"
-          :download="number"
+          :download="`cistercian-${number}`"
           @click="downloadAsImage"
         >download</a> / <a
           class="link"
@@ -173,9 +173,7 @@ export default {
       event.preventDefault();
       domtoimage.toBlob(this.$refs.cistercianNumber)
         .then(imageData => {
-          const item = new ClipboardItem({ 'image/png': imageData });
-
-          navigator.clipboard.write([item]);
+          navigator.clipboard.write([new ClipboardItem({ 'image/png': imageData })]);
         });
     },
   },
