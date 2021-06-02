@@ -23,11 +23,6 @@
   </div>
 </template>
 
-<script>
-export default {
-};
-</script>
-
 <style lang="scss">
   .cistercian-about {
     position: absolute;

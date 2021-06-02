@@ -16,14 +16,17 @@
       >about</button>
     </div>
     <div class="sidebar-content">
-      <transition-group name="fade">
+      <transition-group name="sidebar">
         <CistercianSettings
           v-if="sidebarMode === 'settings'"
           @change-transition-mode="changeTransitionMode"
           @change-lines-color="changeLinesColor"
-          key="1"
+          key="settings"
         />
-        <CistercianAbout v-if="sidebarMode === 'about'" key="2"/>
+        <CistercianAbout
+          v-if="sidebarMode === 'about'"
+          key="about"
+        />
       </transition-group>
     </div>
   </div>

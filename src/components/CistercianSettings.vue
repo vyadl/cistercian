@@ -138,9 +138,13 @@ export default {
         font-size: 12px;
       }
 
+      .lines-color-buttons-container {
+        width: 90%;
+      }
+
       .lines-color-button {
-        width: 25px;
-        height: 25px;
+        width: 35px;
+        height: 35px;
       }
     }
   }

@@ -27,7 +27,7 @@
       >
         <transition :name="`${transitionModeLocal}-central`">
           <div
-            class="central-line-outer"
+            class="central-line-wrapper"
             v-if="isCistercianShown && number"
           >
             <div
@@ -48,15 +48,10 @@
           >
             <div v-if="isCistercianShown">
               <div
-                class="line first"
-                :style="{ 'background-color': linesColorLocal }"
-              ></div>
-              <div
-                class="line second"
-                :style="{ 'background-color': linesColorLocal }"
-              ></div>
-              <div
-                class="line third"
+                class="line"
+                v-for="line in ['first', 'second', 'third']"
+                :key="line"
+                :class="line"
                 :style="{ 'background-color': linesColorLocal }"
               ></div>
             </div>
@@ -334,7 +329,7 @@ export default {
       transform: scale(-1, -1);
     }
 
-    .central-line-outer {
+    .central-line-wrapper {
       position: absolute;
       left: 50%;
       width: $line-width;

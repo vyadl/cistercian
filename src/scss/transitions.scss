@@ -96,24 +96,19 @@
 
 // sidebar transition
 
-.fade-enter-active {
+.sidebar-enter-active,
+.sidebar-leave-active {
   transition:
     opacity .1s,
     transform .1s;
 }
 
-.fade-leave-active {
-  transition:
-    opacity .1s,
-    transform .1s;
-}
-
-.fade-enter {
+.sidebar-enter {
   opacity: 0;
   transform: translateX(-30px);
 }
 
-.fade-leave-to {
+.sidebar-leave-to {
   opacity: 0;
   transform: translateX(30px);
 }
