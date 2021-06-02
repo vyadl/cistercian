@@ -93,3 +93,22 @@
     map-get($lines-transitions, 'duration')
     map-get($lines-transitions, 'step') * 3;
 }
+
+// sidebar transition
+
+.sidebar-enter-active,
+.sidebar-leave-active {
+  transition:
+    opacity .1s,
+    transform .1s;
+}
+
+.sidebar-enter {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.sidebar-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
