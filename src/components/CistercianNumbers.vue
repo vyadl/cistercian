@@ -25,11 +25,16 @@
         v-for="(cistercianDigit, index) in digits"
         :key="index"
       >
-        <transition :name="`${transitionModeComputed}-central`">
+        <transition :name="`${transitionModeLocal}-central`">
           <div
-            class="central-line"
+            class="central-line-outer"
             v-if="isCistercianShown && number"
-          ></div>
+          >
+            <div
+              class="central-line-inner"
+              :style="{ 'background-color': linesColorLocal }"
+            ></div>
+          </div>
         </transition>
         <div
           class="digit"
@@ -37,13 +42,23 @@
           v-for="(numeral, digit, index) in cistercianDigit.digitsList"
           :key="digit"
         >
-          <transition :name="transitionModeComputed === 'together'
-            ? transitionModeComputed : `separately-${cistercianDigit.transitions[index]}`"
+          <transition :name="transitionModeLocal === 'together'
+            ? transitionModeLocal
+            : `separately-${cistercianDigit.transitions[index]}`"
           >
             <div v-if="isCistercianShown">
-              <div class="line first"></div>
-              <div class="line second"></div>
-              <div class="line third"></div>
+              <div
+                class="line first"
+                :style="{ 'background-color': linesColorLocal }"
+              ></div>
+              <div
+                class="line second"
+                :style="{ 'background-color': linesColorLocal }"
+              ></div>
+              <div
+                class="line third"
+                :style="{ 'background-color': linesColorLocal }"
+              ></div>
             </div>
           </transition>
         </div>
@@ -68,28 +83,34 @@
 
 <script>
 import { debounce, shuffleArray } from '@/utils/utils';
-import { DELAY_ON_INPUT, DEFAULT_TRANSITION_MODE } from 'root/config';
 import domtoimage from 'dom-to-image';
+import { DELAY_ON_INPUT, DEFAULT_TRANSITION_MODE, DEFAULT_LINES_COLOR } from 'root/config';
 
-const MAX_DECIMAL = 999999999999;
 const { ClipboardItem } = window;
+const MAX_DECIMAL = 999999999999;
 
 export default {
   props: {
     transitionMode: String,
+    linesColor: String,
   },
   data: () => ({
     number: null,
     digits: [],
     isCistercianShown: false,
-    digitsTransitionsOrder: [1, 2, 3, 4],
     isValidationMessageShown: false,
     maxDecimal: MAX_DECIMAL,
     linkHref: 'http://',
+    digitsTransitionsOrder: [1, 2, 3, 4],
+    transitionModeLocal: localStorage.getItem('transition-mode') || DEFAULT_TRANSITION_MODE,
+    linesColorLocal: localStorage.getItem('lines-color') || DEFAULT_LINES_COLOR,
   }),
-  computed: {
-    transitionModeComputed() {
-      return this.transitionMode || DEFAULT_TRANSITION_MODE;
+  watch: {
+    transitionMode: function watchTransitionMode() {
+      this.transitionModeLocal = this.transitionMode;
+    },
+    linesColor: function watchLinesColor() {
+      this.linesColorLocal = this.linesColor;
     },
   },
   mounted() {
@@ -313,14 +334,20 @@ export default {
       transform: scale(-1, -1);
     }
 
-    .central-line {
+    .central-line-outer {
       position: absolute;
       left: 50%;
       width: $line-width;
       height: 100%;
       border-radius: $line-border-radius;
-      background-color: map-get($colors, 'line');
+      overflow: hidden;
       transform: translateX(-50%);
+    }
+
+    .central-line-inner {
+      width: 100%;
+      height: 100%;
+      transition: background-color 1s;
     }
 
     .line {
@@ -329,7 +356,7 @@ export default {
       width: 100%;
       height: $line-width;
       border-radius: $line-border-radius;
-      background-color: map-get($colors, 'line');
+      transition: background-color 1s;
     }
 
     .numeral-1 {
@@ -467,14 +494,14 @@ export default {
 
   @media screen and (max-width: map-get($display-breakpoints, 'xl')) {
     .cistercian-numbers {
+      .links-container {
+          display: none;
+        }
+
       .cistercian-numbers-container {
         &.multiple {
           transform-origin: center top;
           transform: scale(map-get($scale-coefficients, 'xl'));
-
-          + .links-container {
-            transform: translateY(-120px);
-          }
         }
       }
     }
@@ -486,10 +513,6 @@ export default {
         &.multiple {
           transform-origin: center top;
           transform: scale(map-get($scale-coefficients, 'l'));
-
-          + .links-container {
-            transform: translateY(-175px);
-          }
         }
       }
     }
@@ -501,11 +524,6 @@ export default {
         &.multiple {
           transform-origin: center top;
           transform: scale(map-get($scale-coefficients, 'm'));
-
-          + .links-container {
-            font-size: 12px;
-            transform: translateY(-240px);
-          }
         }
       }
     }
@@ -517,11 +535,6 @@ export default {
         &.multiple {
           transform-origin: center top;
           transform: scale(map-get($scale-coefficients, 's'));
-
-          + .links-container {
-            font-size: 11px;
-            transform: translateY(-255px);
-          }
         }
       }
 
@@ -543,11 +556,6 @@ export default {
         &.multiple {
           transform-origin: center top;
           transform: scale(map-get($scale-coefficients, 'xs'));
-
-          + .links-container {
-            font-size: 10px;
-            transform: translateY(-290px);
-          }
         }
       }
 

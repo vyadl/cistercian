@@ -6,11 +6,15 @@
       class="main-content"
       :class="{ parallax: isSidebarShown }"
     >
-      <CistercianNumbers :transition-mode="transitionMode" />
+      <CistercianNumbers
+        :transition-mode="transitionMode"
+        :lines-color="linesColor"
+      />
     </div>
     <Sidebar
       @change-sidebar-state="isSidebarShown = $event"
       @change-transition-mode="transitionMode = $event"
+      @change-lines-color="linesColor = $event"
     />
   </div>
 </template>
@@ -27,6 +31,7 @@ export default {
   data: () => ({
     isSidebarShown: false,
     transitionMode: '',
+    linesColor: '',
   }),
 };
 </script>

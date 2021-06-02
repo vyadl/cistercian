@@ -6,40 +6,62 @@
     <div class="buttons-container">
       <button
         class="open-button"
-        @click="showSidebar"
+        :class="{ active: sidebarMode === 'settings' }"
+        @click="showSidebar('settings')"
       >settings</button>
+      <button
+        class="open-button"
+        :class="{ active: sidebarMode === 'about' }"
+        @click="showSidebar('about')"
+      >about</button>
     </div>
     <div class="sidebar-content">
-      <CistercianSettings @change-transition-mode="changeTransitionMode"/>
+      <transition-group name="fade">
+        <CistercianSettings
+          v-if="sidebarMode === 'settings'"
+          @change-transition-mode="changeTransitionMode"
+          @change-lines-color="changeLinesColor"
+          key="1"
+        />
+        <CistercianAbout v-if="sidebarMode === 'about'" key="2"/>
+      </transition-group>
     </div>
   </div>
 </template>
 
 <script>
 import CistercianSettings from '@/components/CistercianSettings.vue';
+import CistercianAbout from '@/components/CistercianAbout.vue';
 
 export default {
   components: {
     CistercianSettings,
+    CistercianAbout,
   },
   data: () => ({
     isSidebarShown: false,
+    sidebarMode: null,
   }),
   mounted() {
     document.addEventListener('click', event => {
       if (!event.target.closest('.sidebar')) {
         this.isSidebarShown = false;
+        this.sidebarMode = null;
         this.$emit('change-sidebar-state', false);
       }
     });
   },
   methods: {
-    showSidebar() {
+    showSidebar(mode) {
       this.isSidebarShown = true;
+      this.sidebarMode = mode;
       this.$emit('change-sidebar-state', true);
     },
     changeTransitionMode($event) {
       this.$emit('change-transition-mode', $event);
+    },
+    changeLinesColor($event) {
+      this.$emit('change-lines-color', $event);
     },
   },
 };
@@ -52,6 +74,8 @@ export default {
     top: 0;
     right: 0;
     width: 300px;
+    height: 100vh;
+    padding: 40px 20px 100px 30px;
     background-color: white;
     transform: translateX(300px);
     transition:
@@ -69,7 +93,7 @@ export default {
 
     .buttons-container {
       position: fixed;
-      bottom: 160px;
+      bottom: 180px;
       left: 0;
       transform-origin: right bottom;
       transform: translateX(-100%) rotate(-90deg);
@@ -81,7 +105,15 @@ export default {
       letter-spacing: .6px;
       color: map-get($colors, 'grey');
       cursor: pointer;
-      transition: padding .3s;
+      transition:
+        text-shadow .2s,
+        padding .3s;
+
+      &.active {
+        text-shadow:
+          .5px 0 map-get($colors, 'grey' ),
+          .5px 0 1px map-get($colors, 'grey' );
+      }
 
       &:hover {
         color: black;
@@ -89,9 +121,17 @@ export default {
     }
 
     .sidebar-content {
-      height: 100vh;
-      padding: 40px 30px 100px;
-      overflow: auto;
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  @media screen and (max-width: map-get($display-breakpoints, 'xl')) {
+    .sidebar {
+      .buttons-container {
+        bottom: 250px;
+      }
     }
   }
 

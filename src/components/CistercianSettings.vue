@@ -1,6 +1,6 @@
 <template>
   <div class="cistercian-settings">
-    <form class="settings-form">
+    <form class="settings">
       <div class="form-title">lines appearence mode</div>
       <div class="transition-mode-buttons-container">
         <button
@@ -15,20 +15,41 @@
         >separately</button>
       </div>
     </form>
+    <form class="settings">
+      <div class="form-title">lines color</div>
+      <div class="lines-color-buttons-container">
+        <button
+          class="lines-color-button"
+          v-for="(color, name) in linesColorPalette"
+          :key="name"
+          :class="{ active: linesColor === color }"
+          :style="{ 'background-color': color }"
+          @click.prevent="changeLinesColor(color)"
+        ></button>
+      </div>
+    </form>
   </div>
 </template>
 
 <script>
-import { DEFAULT_TRANSITION_MODE } from 'root/config';
+import { DEFAULT_TRANSITION_MODE, DEFAULT_LINES_COLOR, LINES_COLOR_PALETTE } from 'root/config';
 
 export default {
   data: () => ({
-    transitionMode: DEFAULT_TRANSITION_MODE,
+    transitionMode: localStorage.getItem('transition-mode') || DEFAULT_TRANSITION_MODE,
+    linesColor: localStorage.getItem('lines-color') || DEFAULT_LINES_COLOR,
+    linesColorPalette: LINES_COLOR_PALETTE,
   }),
   methods: {
     changeTransitionMode(mode) {
       this.transitionMode = mode;
       this.$emit('change-transition-mode', mode);
+      localStorage.setItem('transition-mode', mode);
+    },
+    changeLinesColor(color) {
+      this.linesColor = color;
+      this.$emit('change-lines-color', color);
+      localStorage.setItem('lines-color', color);
     },
   },
 };
@@ -36,10 +57,15 @@ export default {
 
 <style lang="scss">
   .cistercian-settings {
-    .settings-form {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    .settings {
       display: flex;
       flex-direction: column;
       align-items: center;
+      margin-bottom: 50px;
     }
 
     .form-title {
@@ -79,6 +105,26 @@ export default {
         }
       }
     }
+
+    .lines-color-buttons-container {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+      width: 70%;
+    }
+
+    .lines-color-button {
+      margin: 0 3px 10px;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      transition: transform .3s;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
   }
 
   @media screen and (max-width: map-get($display-breakpoints, 's')) {
@@ -90,6 +136,11 @@ export default {
       .transition-mode-button {
         line-height: 11.5px;
         font-size: 12px;
+      }
+
+      .lines-color-button {
+        width: 25px;
+        height: 25px;
       }
     }
   }
