@@ -29,6 +29,7 @@
     top: 0;
     left: 0;
     width: 100%;
+    padding: 40px 20px 100px 30px;
 
     .text {
       font-size: 12px;
