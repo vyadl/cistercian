@@ -109,16 +109,14 @@ export default {
     }
 
     .lines-color-buttons-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      width: 140px;
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-gap: 10px;
     }
 
     .lines-color-button {
       display: block;
-      margin-bottom: 10px;
       width: 40px;
       height: 40px;
       cursor: pointer;
@@ -139,10 +137,6 @@ export default {
       .transition-mode-button {
         line-height: 11.5px;
         font-size: 12px;
-      }
-
-      .lines-color-buttons-container {
-        width: 125px;
       }
 
       .lines-color-button {
