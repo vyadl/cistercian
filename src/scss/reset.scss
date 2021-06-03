@@ -34,6 +34,8 @@ a {
 }
 
 input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+input::-webkit-inner-spin-button,
+input::-moz-inner-spin-button,
+input::-moz-outer-spin-button {
   display: none;
 }
