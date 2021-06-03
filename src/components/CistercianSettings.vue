@@ -61,6 +61,7 @@ export default {
     top: 0;
     left: 0;
     width: 100%;
+    padding: 40px 20px 100px;
 
     .settings {
       display: flex;
@@ -112,10 +113,11 @@ export default {
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      width: 145px;
+      width: 140px;
     }
 
     .lines-color-button {
+      display: block;
       margin-bottom: 10px;
       width: 40px;
       height: 40px;
@@ -140,7 +142,7 @@ export default {
       }
 
       .lines-color-buttons-container {
-        width: 130px;
+        width: 125px;
       }
 
       .lines-color-button {
