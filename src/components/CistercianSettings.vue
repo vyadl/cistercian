@@ -119,6 +119,7 @@ export default {
       display: block;
       width: 40px;
       height: 40px;
+      padding: 0;
       cursor: pointer;
       transition: transform .3s;
 
