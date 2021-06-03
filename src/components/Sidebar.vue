@@ -96,10 +96,10 @@ export default {
 
     .buttons-container {
       position: fixed;
-      bottom: 180px;
+      bottom: 15px;
       left: 0;
-      transform-origin: right bottom;
-      transform: translateX(-100%) rotate(-90deg);
+      transform-origin: left bottom;
+      transform: rotate(-90deg);
     }
 
     .open-button {
@@ -127,6 +127,8 @@ export default {
       position: relative;
       width: 100%;
       height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
   }
 
@@ -149,6 +151,7 @@ export default {
   @media screen and (max-width: map-get($display-breakpoints, 's')) {
     .sidebar {
       width: 200px;
+      padding-bottom: 50px;
       transform: translateX(200px);
     }
   }

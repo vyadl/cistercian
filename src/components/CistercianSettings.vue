@@ -60,6 +60,7 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
 
     .settings {
       display: flex;
@@ -108,14 +109,14 @@ export default {
 
     .lines-color-buttons-container {
       display: flex;
-      justify-content: space-around;
+      justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      width: 70%;
+      width: 145px;
     }
 
     .lines-color-button {
-      margin: 0 3px 10px;
+      margin-bottom: 10px;
       width: 40px;
       height: 40px;
       cursor: pointer;
@@ -139,7 +140,7 @@ export default {
       }
 
       .lines-color-buttons-container {
-        width: 90%;
+        width: 130px;
       }
 
       .lines-color-button {

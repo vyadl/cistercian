@@ -17,7 +17,7 @@
          (system with 10000 distinct symbols).<br>
         It means that "10000" in decimal system
          converts into two separate cistercian signs one by one - "1" and "0".<br>
-        Like decimal "8" is "10" in octal system or decimal "16" is "A0" in hexadecimal.
+        Like decimal "8" is "10" in octal system or decimal "16" is "10" in hexadecimal.
       </p>
     </div>
   </div>
