@@ -78,7 +78,7 @@ export default {
     .transition-mode-buttons-container {
       display: flex;
       justify-content: space-around;
-      width: 100%;
+      width: 85%;
     }
 
     .transition-mode-button {
