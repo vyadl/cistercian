@@ -134,7 +134,7 @@ export default {
   @media screen and (max-width: map-get($display-breakpoints, 'xl')) {
     .sidebar {
       .buttons-container {
-        bottom: 50px;
+        bottom: 70px;
       }
     }
   }

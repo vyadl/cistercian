@@ -224,12 +224,14 @@ export default {
       &:focus {
         border-color: map-get($colors, 'dark-grey');
 
-        &::-webkit-input-placeholder {
+        &::-webkit-input-placeholder,
+        &::-moz-input-placeholder {
           color: transparent;
         }
       }
 
-      &::-webkit-input-placeholder {
+      &::-webkit-input-placeholder,
+      &::-moz-input-placeholder {
         font-size: 14px;
         transition: color .2s;
       }
