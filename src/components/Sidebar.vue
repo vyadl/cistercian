@@ -78,7 +78,6 @@ export default {
     right: 0;
     width: 300px;
     height: 100vh;
-    padding: 40px 20px 100px 30px;
     background-color: white;
     transform: translateX(300px);
     transition:
@@ -135,7 +134,7 @@ export default {
   @media screen and (max-width: map-get($display-breakpoints, 'xl')) {
     .sidebar {
       .buttons-container {
-        bottom: 250px;
+        bottom: 50px;
       }
     }
   }
@@ -151,7 +150,6 @@ export default {
   @media screen and (max-width: map-get($display-breakpoints, 's')) {
     .sidebar {
       width: 200px;
-      padding-bottom: 50px;
       transform: translateX(200px);
     }
   }
