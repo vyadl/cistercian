@@ -1,6 +1,9 @@
 <template>
   <div class="cistercian-numbers">
-    <form class="form-number">
+    <form
+      class="form-number"
+      @submit.prevent
+    >
       <input
         class="input-number"
         type="number"
